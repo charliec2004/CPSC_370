@@ -1,0 +1,21 @@
+# Local Python environments and generated files
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Local credentials and settings
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Machine-specific files and runtime logs
+.DS_Store
+.idea/
+.vscode/
+*.log
