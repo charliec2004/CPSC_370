@@ -1,5 +1,7 @@
 # Team laptop timing comparison
 
+**Team:** `Auctioneers`
+
 Use this table to compare our laptops before choosing the tournament machine. Lower times are faster. These are small verification tasks; confirm performance and connection reliability in the practice room before deciding.
 
 ## Results
@@ -33,6 +35,6 @@ For a fair comparison, use the same unmodified reference implementations, plug i
 
 Compare estimated versus actual delivery times, profit, deadline failures, and connection stability on the promising machines. Coordinate runs so only one agent uses our shared team name at a time.
 
-- **Selected tournament laptop:** To decide
-- **Reason:** To fill in after comparing results
+- **Selected tournament laptop:** Charles's laptop
+- **Reason:** Team decision; tune and validate the final strategy on this machine.
 - **Practice observations:** To fill in

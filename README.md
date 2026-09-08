@@ -2,6 +2,10 @@
 
 Group workspace for Assignment 1: build a Python contractor that bids on computational tasks and executes awarded jobs locally.
 
+**Team name:** `Auctioneers` — use this exact name for all practice and tournament runs.
+
+**Tournament machine:** Charles's laptop. Tune and validate the final strategy on this machine.
+
 ## Setup
 
 ```bash
@@ -20,10 +24,10 @@ On Windows, activate the environment with `.venv\Scripts\activate`.
 The [practice dashboard](https://contractnet.blackdial.workers.dev/dev?room=practice) shows tasks, bids, and protocol messages. Get the class token from Canvas; keep it out of commits and pull requests.
 
 ```bash
-python my_contractor.py --name YOUR_TEAM_NAME --url 'wss://contractnet.blackdial.workers.dev/agent?room=practice' --token CLASS_TOKEN
+python my_contractor.py --name Auctioneers --url 'wss://contractnet.blackdial.workers.dev/agent?room=practice' --token CLASS_TOKEN
 ```
 
-Replace the placeholders locally. Use the agreed team name for practice and the tournament. Coordinate runs: two agents using the same name cannot stay connected at once.
+Replace `CLASS_TOKEN` locally with the token from Canvas. Coordinate runs: two agents using the same name cannot stay connected at once.
 
 ## Working together
 
