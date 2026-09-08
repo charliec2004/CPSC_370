@@ -28,6 +28,8 @@ And on `task`:
 from __future__ import annotations
 
 import argparse
+import os
+from pathlib import Path
 
 from contractnet import Bid, Contractor, Task
 
@@ -84,18 +86,53 @@ class MyContractor(Contractor):
     #     return super().execute(task)
 
 
+def class_token() -> str | None:
+    """Read CLASS_TOKEN from the environment, then the .env beside this file.
+
+    The local file supports plain or quoted KEY=value lines and full-line
+    comments. Values are literal: no shell commands or variable expansion.
+    """
+    if "CLASS_TOKEN" in os.environ:
+        return os.environ["CLASS_TOKEN"] or None
+    try:
+        lines = Path(__file__).with_name(".env").read_text(encoding="utf-8").splitlines()
+    except FileNotFoundError:
+        return None
+    for line in lines:
+        line = line.strip()
+        if not line or line.startswith("#"):
+            continue
+        key, separator, value = line.partition("=")
+        if key.strip() != "CLASS_TOKEN":
+            continue
+        if not separator:
+            raise ValueError("CLASS_TOKEN in .env must use KEY=value format")
+        value = value.strip()
+        if value.startswith(("'", '"')):
+            if len(value) < 2 or value[-1] != value[0]:
+                raise ValueError("CLASS_TOKEN in .env has unmatched quotes")
+            value = value[1:-1]
+        return value or None
+    return None
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="CPSC 370 Contract Net contractor")
     parser.add_argument("--name", required=True, help="your team name, e.g. Team_07")
     parser.add_argument("--url", required=True, help="wss://.../agent")
-    parser.add_argument("--token", default=None, help="class token, if the room requires one")
+    parser.add_argument("--token", default=None, help="override CLASS_TOKEN from the environment or .env")
     parser.add_argument("--machine", default=None, help="label shown on the leaderboard")
     args = parser.parse_args()
+
+    try:
+        token = args.token if args.token is not None else class_token()
+    except (OSError, UnicodeError, ValueError):
+        parser.error("Could not load CLASS_TOKEN; check the local .env file format and permissions.")
 
     MyContractor(
         name=args.name,
         url=args.url,
-        token=args.token,
+        token=token,
         machine=args.machine,
     ).run()
 

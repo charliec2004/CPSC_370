@@ -21,13 +21,13 @@ On Windows, activate the environment with `.venv\Scripts\activate`.
 
 ## Practice
 
-The [practice dashboard](https://contractnet.blackdial.workers.dev/dev?room=practice) shows tasks, bids, and protocol messages. Get the class token from Canvas; keep it out of commits and pull requests.
+The [practice dashboard](https://contractnet.blackdial.workers.dev/dev?room=practice) shows tasks, bids, and protocol messages. Copy `contract-net/student/.env.example` to `.env` in the same directory and set `CLASS_TOKEN` to the class token from Canvas. The `.env` file is ignored by Git.
 
 ```bash
-python my_contractor.py --name Auctioneers --url 'wss://contractnet.blackdial.workers.dev/agent?room=practice' --token CLASS_TOKEN
+python my_contractor.py --name Auctioneers --url 'wss://contractnet.blackdial.workers.dev/agent?room=practice'
 ```
 
-Replace `CLASS_TOKEN` locally with the token from Canvas. Coordinate runs: two agents using the same name cannot stay connected at once.
+The agent reads `.env` beside `my_contractor.py`, regardless of your working directory. An existing `CLASS_TOKEN` environment variable takes precedence; `--token` overrides both. Values may be plain or quoted and are read literally, without shell expansion. Coordinate runs: two agents using the same name cannot stay connected at once.
 
 ## Working together
 
