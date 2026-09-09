@@ -2,6 +2,8 @@
 
 Start here to understand the agent. Use the [README](README.md) to run it, the [optimization report](OPTIMIZATION_PROOF.md) for mathematical arguments and measurements, and [practice notes](PRACTICE_NOTES.md) for the history of our experiments.
 
+**Current default:** `competitive` pricing and optimized sorting have been added. Read [the current strategy](COMPETITIVE_STRATEGY.md) for the exact feedback and hash-risk formulas. Earlier practice results below describe their named historical modes.
+
 ## The assignment in one minute
 
 The course server offers computing jobs with a budget and deadline. Our program either declines or submits a price and estimated delivery time. If we win, Charles's M1 Pro computes the answer locally and returns it. The server checks the answer and records payment, time cost, and any penalty.
@@ -31,7 +33,7 @@ We also refuse new work when stopping or when a current computation has already 
 
 ## Our current price and time formulas
 
-The default `--pricing markup` policy is:
+The legacy `--pricing markup` formula, also used as the non-hash minimum in competitive mode, is:
 
 ```text
 compute estimate = raw timing model × learned correction for this task type
@@ -77,7 +79,7 @@ For matrices, the reference's cubic work model no longer describes our faster al
 
 For primes, we separately measure a coefficient for base-prime generation and segment setup, and a coefficient for marking the interval. The prediction accounts for the square root of the upper bound, the number of segments, and the interval width. Both optimized models add a small 0.0005-second fixed allowance.
 
-Monte Carlo, sorting, and hashing retain the supplied implementations and SDK calibration. The benchmark number reported during registration still comes from the SDK's standard calibration; the fast executors have additional timing models inside our agent.
+Monte Carlo and hashing retain the supplied implementations and SDK calibration. Sorting now uses exact rejection sampling and one final modular reduction, with an additional startup timing model described in the current strategy. The benchmark number reported during registration still comes from the SDK's standard calibration; the fast executors have additional timing models inside our agent.
 
 Calibration can become inaccurate as the laptop heats up or other applications consume resources. Ten holdout cases supported the new models in local tests; those checks cannot guarantee every future deadline.
 
@@ -143,13 +145,13 @@ These are our implementation's resource limits, not promises about the course se
 
 Malformed inputs, unknown task types, invalid budgets/deadlines/cost rates, missing calibration, unaffordable bids, and estimates past the deadline also cause refusal. A deadline comparison is based on a prediction, not certainty that a particular job will finish.
 
-## Hash search: an unfinished part of the strategy
+## Hash search: modelled risk, with remaining uncertainty
 
 Each hash attempt succeeds with probability `threshold / 2^32`, so the expected number of attempts is `2^32 / threshold`. A particular instance can take much longer or much less than that average.
 
 We retain the reference hash executor and its throughput calibration. We deliberately do not learn a compute correction from individual hash runtimes: a lucky or unlucky seed should not redefine how fast our machine hashes.
 
-**We have not implemented a hash-specific failure probability, risk premium, or conservative runtime percentile.** It currently uses the expected work, delivery allowance, queue checks, and the same 1.28-based minimum, with additional budget-based pricing only in adaptive mode. The overrun guard prevents additional commitments while a running job exceeds its estimate; it does not prevent the first job from missing its deadline. Successful repeated practice seeds do not prove safety on new tournament seeds.
+The default competitive mode now requires a modelled on-time success probability of at least 0.95 and includes expected failure penalties in its minimum price. See the [exact formulas and limitations](COMPETITIVE_STRATEGY.md#hash-search-account-for-the-distribution). The legacy modes retain their original expected-work pricing. Neither model guarantees delivery on unseen seeds; timing error and the relationship between budgets, deadlines, and measured task difficulty remain important.
 
 ## Where to find each part in the code
 
@@ -158,7 +160,8 @@ All submitted logic is in [my_contractor.py](contract-net/student/my_contractor.
 | Function or method | Responsibility |
 |---|---|
 | `matrix_parameters`, `prime_parameters`, `_supported` | Validate supported inputs and resource limits |
-| `matrix_checksum`, `prime_sieve` | Compute the exact optimized answers |
+| `matrix_checksum`, `prime_sieve`, `sort_fast` | Compute exact optimized answers |
+| `hash_success_probability` | Model the chance of completing hash work within available time |
 | `calibrate_fast`, `_base_estimate`, `estimate` | Measure speed and predict local computation |
 | `queue_seconds` | Account for reservations and guard against running overruns |
 | `on_cfp` | Refuse or return a price/time bid |
@@ -191,13 +194,13 @@ The recorded integrated trial completed 49 jobs correctly with zero failures in 
 
 Sampling observed no competing valid bids in 27 auctions during part of that run. Those profits do not demonstrate that we beat active competition. Later, a correctly delivered sort job lost 1.18 credits because it ran longer than estimated. Therefore we cannot claim either that 1.28 is a safe profit floor or that it is the best price.
 
-Budget-aware outcome feedback is now available as the adaptive experiment. Modelling competing scores and explicitly pricing hash-search risk remain unimplemented. Keep changes separate enough that we can explain which change caused which result.
+Competitive mode now adds faster price feedback and an explicit hash-risk model. Modelling competitors' full scores and validating performance under active competition remain unfinished. Keep changes separate enough that we can explain which change caused which result.
 
 ## Explaining this to the instructor
 
 A short explanation of our current strategy is:
 
-> We compute the exact matrix checksum and prime count using faster algorithms, calibrate their runtime on our tournament laptop, include queued work and measured delivery overhead, and use a 28% markup over predicted billed cost as our baseline. Our experimental mode asks for part of the remaining budget and adjusts that fraction from auction outcomes. We refuse unsupported or unaffordable work and jobs predicted to miss the deadline. We learn timing corrections from successful deliveries. Hash uncertainty and competitive pricing still need improvement.
+> We compute the exact matrix checksum and prime count using faster algorithms, calibrate their runtime on our tournament laptop, include queued work and measured delivery overhead, and use a 28% markup over predicted billed cost as our baseline. Our experimental mode asks for part of the remaining budget and adjusts that fraction from auction outcomes. We refuse unsupported or unaffordable work and jobs predicted to miss the deadline. We learn timing corrections from successful deliveries. The default mode reduces price margins quickly after losses and screens hash jobs using a geometric risk model; those models still need competitive validation.
 
 Each member should also be able to explain why the matrix identity is exact, why the sieve identifies primes, why an underestimated job can lose money despite a markup, and why we exclude hash outcomes from throughput learning.
 

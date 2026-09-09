@@ -1,8 +1,8 @@
 """
 CPSC 370, Assignment 1: your Contract Net contractor.
 
-Exact optimized matrix and prime executors, calibrated timing, and a 28%
-markup over predicted billed time. The SDK remains unchanged.
+Exact optimized matrix, prime, and sort executors, calibrated timing,
+competitive pricing, and explicit hash risk admission. The SDK is unchanged.
 
     python my_contractor.py --name Team_07 --url wss://contractnet.example.com/agent
 
@@ -40,6 +40,38 @@ import time
 from pathlib import Path
 
 from contractnet import Bid, Contractor, Task
+
+
+def sort_fast(params):
+    """Preserve CPython Random.randrange(0, 2**31)'s rejection draws exactly."""
+    n, seed = params["n"], params["seed"]
+    if (type(n) is not int or not 0 <= n <= 5_000_000
+            or type(seed) is not int or seed.bit_length() > 64):
+        raise ValueError("Unsupported sort parameters")
+    bits = random.Random(seed).getrandbits
+    values = []
+    append = values.append
+    for _ in range(n):
+        value = bits(32)
+        while value >= 2**31:
+            value = bits(32)
+        append(value)
+    values.sort()
+    # Exact Python integers allow reducing the weighted sum just once.
+    return sum(i * value for i, value in enumerate(values, 1)) % ((1 << 61) - 1)
+
+
+def hash_success_probability(threshold, mean_seconds, available_seconds):
+    """Geometric search model; throughput and available time are predictions."""
+    if available_seconds <= 0 or mean_seconds <= 0:
+        return 0.0
+    probability = threshold / 2**32
+    attempts = math.floor(available_seconds / (mean_seconds * probability))
+    if attempts < 1:
+        return 0.0
+    if probability == 1:
+        return 1.0
+    return -math.expm1(attempts * math.log1p(-probability))
 
 
 def matrix_parameters(params):
@@ -101,14 +133,15 @@ def prime_sieve(params):
 
 
 class MyContractor(Contractor):
-    """Exact fast executors, measured delivery estimates, and a 28% markup."""
+    """Exact fast executors with measured timing and independent bid feedback."""
 
-    def __init__(self, *args, pricing="markup", **kwargs):
-        if pricing not in ("markup", "adaptive"):
+    def __init__(self, *args, pricing="competitive", **kwargs):
+        if pricing not in ("markup", "adaptive", "competitive"):
             raise ValueError("Unknown pricing policy")
         super().__init__(*args, **kwargs)
         self._pricing = pricing
         self._price_shares = {}
+        self._price_wins = {}
         self._fast = {}
         self._bias = {}
         self._overheads = deque(maxlen=20)
@@ -211,10 +244,17 @@ class MyContractor(Contractor):
             elapsed = measure(prime_sieve, {"lo": lo, "hi": lo+width})
             marking.append(elapsed / width)
         fast["prime_marking"] = max(marking)
+        fast["sort"] = max(measure(sort_fast, {"seed": 370, "n": n}) /
+                           (n * math.log2(n)) for n in (100_000, 400_000, 1_200_000))
         self._fast = fast
-        self._log("fast executor calibration complete (matrix n²; segmented prime sieve)")
+        self._log("fast calibration complete (matrix n²; prime sieve; exact fast sort)")
 
     def _base_estimate(self, task):
+        if task.task_type == "sort_checksum":
+            n = task.params["n"]
+            coefficient = self._fast.get("sort")
+            return (0.0005 + n * math.log2(max(n, 2)) * coefficient
+                    if coefficient is not None else float("inf"))
         if task.task_type == "matmul_mod":
             n, mod, _ = matrix_parameters(task.params)
             coefficient = self._fast.get("matrix32" if mod.bit_length() <= 32 else "matrix64")
@@ -292,12 +332,28 @@ class MyContractor(Contractor):
                 return None
             # Keep 1.28, but charge for the whole predicted billed interval:
             # waiting, computation, worker scheduling, and delivery overhead.
-            price = round(finish * self.rules.cost_rate * 1.28, 4)
+            success = 1.0
+            expected_cost = finish * self.rules.cost_rate
+            if self._pricing == "competitive" and task.task_type == "hash_search":
+                if (not math.isfinite(self.rules.penalty_rate) or self.rules.penalty_rate < 0
+                        or not math.isfinite(self.rules.late_credit)
+                        or not 0 <= self.rules.late_credit <= 1):
+                    return None
+                success = hash_success_probability(task.params["threshold"], compute,
+                    task.deadline_s - queue - self._network_seconds)
+                if success < 0.95:
+                    return None  # Bound modelled per-contract deadline risk.
+                expected_cost += (1-success) * self.rules.penalty_rate * task.budget
+                # A timeout need not earn late credit, so count payment only
+                # on on-time success. This is conservative when late_credit > 0.
+                expected_cost /= success
+            price = round(expected_cost * 1.28, 4)
             if not math.isfinite(price) or price > task.budget:
                 return None
             floor = price
-            share = self._price_shares.get(task.task_type, 0.5)
-            if self._pricing == "adaptive":
+            share = self._price_shares.get(task.task_type,
+                0.25 if self._pricing == "competitive" else 0.5)
+            if self._pricing in ("adaptive", "competitive"):
                 # Explore the available budget without bidding below the
                 # baseline minimum. Floor the budget to valid wire precision.
                 ceiling = math.floor(task.budget * 10000) / 10000
@@ -309,7 +365,9 @@ class MyContractor(Contractor):
         self._quotes[task.task_id] = {"task_type": task.task_type, "compute": compute,
             "queue": queue, "overhead": self._network_seconds, "estimate": finish,
             "price": price, "budget": task.budget, "pricing": self._pricing,
-            "baseline_price": floor, "price_share": share if self._pricing == "adaptive" else 0}
+            "baseline_price": floor, "price_share": share if self._pricing != "markup" else 0,
+            "model_success_probability": (success if self._pricing == "competitive"
+                and task.task_type == "hash_search" else None)}
         self._log("BID " + json.dumps({"task_id": task.task_id, **self._quotes[task.task_id]}))
         return Bid(price=price, est_seconds=finish)
 
@@ -328,6 +386,8 @@ class MyContractor(Contractor):
                 result = matrix_checksum(task.params)
             elif task.task_type == "prime_count":
                 result = prime_sieve(task.params)
+            elif task.task_type == "sort_checksum":
+                result = sort_fast(task.params)
             else:
                 result = super().execute(task)
             if tracking:
@@ -342,17 +402,28 @@ class MyContractor(Contractor):
 
     def on_reject(self, task_id, winner, price):
         quote = self._quotes.pop(task_id, None)
-        if (quote and self._pricing == "adaptive" and winner
+        if (quote and self._pricing in ("adaptive", "competitive") and winner
                 and winner != self.name and type(price) in (int, float)
                 and math.isfinite(price) and price >= 0):
             kind = quote["task_type"]
-            self._price_shares[kind] = max(0.0, self._price_shares.get(kind, 0.5) - 0.10)
+            if self._pricing == "competitive":
+                self._price_shares[kind] = self._price_shares.get(kind, 0.25) * 0.25
+                self._price_wins[kind] = 0
+            else:
+                self._price_shares[kind] = max(0.0, self._price_shares.get(kind, 0.5) - 0.10)
 
     def on_bid_invalid(self, task_id, reason):
         self._quotes.pop(task_id, None)
 
     def on_settled(self, settlement):
         quote = self._quotes.pop(settlement.task_id, None)
+        if quote and self._pricing == "competitive":
+            kind = quote["task_type"]
+            self._price_wins[kind] = (self._price_wins.get(kind, 0) + 1
+                if settlement.verdict == "correct" else 0)
+            if self._price_wins[kind] >= 2:
+                self._price_shares[kind] = min(0.95, self._price_shares.get(kind, 0.25) + 0.05)
+                self._price_wins[kind] = 0
         if quote and self._pricing == "adaptive" and settlement.verdict == "correct":
             kind = quote["task_type"]
             self._price_shares[kind] = min(0.95, self._price_shares.get(kind, 0.5) + 0.05)
@@ -419,8 +490,8 @@ def main() -> None:
     parser.add_argument("--url", required=True, help="wss://.../agent")
     parser.add_argument("--token", default=None, help="override CLASS_TOKEN from the environment or .env")
     parser.add_argument("--machine", default=None, help="label shown on the leaderboard")
-    parser.add_argument("--pricing", choices=("markup", "adaptive"), default="markup",
-                        help="baseline 1.28 markup or experimental budget-aware pricing")
+    parser.add_argument("--pricing", choices=("markup", "adaptive", "competitive"), default="competitive",
+                        help="competitive pricing with hash risk checks (default), or legacy comparison modes")
     args = parser.parse_args()
 
     try:

@@ -1,0 +1,79 @@
+{
+  "sort_reference_cases": 225,
+  "risk_checks": "geometric boundary cases, 95% admission, failure-adjusted price, budget refusal",
+  "feedback_checks": "multiplicative reduction, two-win increase, failed-delivery reset, per-type isolation",
+  "baseline_checks": 6,
+  "lifecycle": [
+    "shutdown refuses new bids and preserves outstanding work",
+    "duplicate award enqueues once",
+    "reconnect drops only pending bids",
+    "overrunning work prevents new promises",
+    "compute bias learns from raw model",
+    "overhead excludes known queued work",
+    "hash variance does not train throughput",
+    "invalid bids release local quote and commitment"
+  ],
+  "competitive_protocol": {
+    "transport": "real WebSocket on 127.0.0.1",
+    "task_types_delivered": [
+      "monte_carlo_pi",
+      "prime_count",
+      "hash_search",
+      "sort_checksum",
+      "matmul_mod"
+    ],
+    "settlements_recorded": 5,
+    "registrations": 1,
+    "limitation": "Artificial generous budgets, supplied rates, and settlements; not a profit or timing test."
+  },
+  "sort_holdouts": [
+    {
+      "n": 37000,
+      "measured_compute": 0.013586791000000709,
+      "quoted_delivery": 0.1386
+    },
+    {
+      "n": 173000,
+      "measured_compute": 0.07449145799999979,
+      "quoted_delivery": 0.2175
+    },
+    {
+      "n": 617000,
+      "measured_compute": 0.3513983750000005,
+      "quoted_delivery": 0.5027
+    },
+    {
+      "n": 1700003,
+      "measured_compute": 1.1335644169999988,
+      "quoted_delivery": 1.2534
+    }
+  ],
+  "sort_benchmarks": [
+    {
+      "n": 37000,
+      "reference_seconds": 0.029722500000000096,
+      "candidate_seconds": 0.013586791000000709,
+      "speedup": 2.1876026502504193
+    },
+    {
+      "n": 173000,
+      "reference_seconds": 0.15502700000000047,
+      "candidate_seconds": 0.07449145799999979,
+      "speedup": 2.0811379473872145
+    },
+    {
+      "n": 617000,
+      "reference_seconds": 0.6239325840000003,
+      "candidate_seconds": 0.3513983750000005,
+      "speedup": 1.7755704874844667
+    },
+    {
+      "n": 1700003,
+      "reference_seconds": 1.8200401250000002,
+      "candidate_seconds": 1.1335644169999988,
+      "speedup": 1.6055903817242017
+    }
+  ],
+  "source_sha256": "493784f0a133a03fa596b4b98d2939b1c6a1859afb48816a928b9c980d371e32",
+  "limits": "Finite exact-answer checks and local timing samples; hash probability assumes calibrated independent uniform hashing; no proof of tournament optimality."
+}

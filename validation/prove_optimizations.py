@@ -32,6 +32,7 @@ Candidate = MyContractor
 
 
 def make_agent(*args, **kwargs):
+    kwargs.setdefault("pricing", "markup")  # Preserve explicit baseline checks.
     # Python 3.9 needs a construction loop even after an earlier asyncio.run
     # in this test process. Close it deliberately: _main must replace the
     # constructor's queue on its actual running loop.

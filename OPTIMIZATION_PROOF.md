@@ -1,5 +1,7 @@
 # Auctioneers: optimization evidence
 
+For the current default, optimized sorting, and hash-risk checks, see [COMPETITIVE_STRATEGY.md](COMPETITIVE_STRATEGY.md). The original trial results below remain historical evidence. The JSON timing output is refreshed by validation reruns and may differ from the original table; each run records its source hash.
+
 ## Conclusion
 
 The matrix checksum rearrangement and segmented prime sieve are exact algorithms for the stated input domains. Repeated measurements show substantial computation speedups on Charles's M1 Pro with the existing Python 3.9.6 environment. The integrated MyContractor delivers all five task types through the supplied SDK over a real local WebSocket and in the public practice room.

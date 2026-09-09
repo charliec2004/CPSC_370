@@ -1,5 +1,7 @@
 # Budget-aware pricing experiment
 
+For the current default, optimized sorting, and hash-risk checks, see [COMPETITIVE_STRATEGY.md](COMPETITIVE_STRATEGY.md). The original trial results below remain historical evidence.
+
 The baseline sells a fast job cheaply even when its budget is large. The new optional `--pricing adaptive` mode tests whether asking for more of that budget increases profit. It changes pricing only; execution, timing, queue handling, and the Python 3.9.6 runtime stay the same.
 
 ## Policy
