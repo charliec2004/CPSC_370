@@ -49,7 +49,7 @@ class MyContractor(Contractor):
         # What the job actually costs me to run.
         cost = compute_seconds * self.rules.cost_rate
 
-        # TODO(you): this asks for a flat 60% markup and ignores everything
+        # Experiment: a flat 28% markup. This still ignores everything
         # interesting. Consider:
         #
         #   * The auction is scored as `price + time_weight * est_seconds`
@@ -67,7 +67,7 @@ class MyContractor(Contractor):
         #     deadline on costs you `task.budget * self.rules.penalty_rate`.
         #     Note that is off the BUDGET, not off your bid, so underbidding
         #     does not shrink your downside.
-        price = cost * 1.6
+        price = cost * 1.28
 
         if price > task.budget:
             return None
