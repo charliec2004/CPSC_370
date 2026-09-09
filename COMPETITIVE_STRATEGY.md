@@ -1,6 +1,6 @@
 # Auctioneers: current competitive strategy
 
-The default mode is now `competitive`. It combines exact faster matrix, prime, sorting, and Monte Carlo algorithms with calibrated delivery estimates, faster price reductions after losses, and explicit hash-search risk admission. It uses the existing Python 3.9.6 environment; NumPy 2.0.2 optionally accelerates Monte Carlo; SDK files are unchanged.
+The default mode is now `competitive`. It combines exact faster matrix, prime, sorting, Monte Carlo, and hash-search algorithms with calibrated delivery estimates, faster price reductions after losses, and explicit hash-search risk admission. The recommended measured runtime is Python 3.12.13, with Python 3.9.6 retained as a tested fallback; NumPy 2.0.2 optionally accelerates Monte Carlo; SDK files are unchanged.
 
 ## What changed and why
 
@@ -45,6 +45,8 @@ For example, a 0.25 share drops to 0.0625 after one loss and 0.015625 after two.
 These constants are heuristics, not a proven optimal auction strategy. Feedback is separated by task type but still mixes different task sizes and competitor conditions. State resets when the process restarts. The policy uses the manager's own award/rejection messages and does not coordinate bids with anyone.
 
 ### Hash search: account for the distribution
+
+The exact executor now reuses the fixed seed prefix in SHA-256 and compares four-byte digests directly. Calibration times fixed numbers of attempts through that same loop; it does not stop at a lucky success. See the [correctness proof and offline measurements](HASH_PROOF.md).
 
 Under the independent uniform-hash model, each attempt succeeds with probability `p = threshold / 2**32`. Given expected compute time `m`, estimate seconds per attempt as `m × p`. After subtracting queued work and delivery allowance from the deadline, let `k` be the whole number of attempts that fit. The modelled chance of on-time success is:
 

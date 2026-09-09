@@ -29,6 +29,8 @@ from __future__ import annotations
 import argparse
 import asyncio
 from collections import deque
+import hashlib
+import itertools
 import json
 import math
 import os
@@ -92,6 +94,29 @@ def sort_fast(params):
     values.sort()
     # Exact Python integers allow reducing the weighted sum just once.
     return sum(i * value for i, value in enumerate(values, 1)) % ((1 << 61) - 1)
+
+
+def _hash_scan(seed, target, nonces):
+    """Shared execution/calibration loop; four-byte ordering is big-endian."""
+    clone = hashlib.sha256((str(seed) + ":").encode()).copy
+    for nonce in nonces:
+        digest = clone()
+        digest.update(str(nonce).encode())
+        if digest.digest()[:4] < target:
+            return nonce
+    return None
+
+
+def hash_fast(params):
+    """Return the first valid nonce, preserving the exact SHA-256 input."""
+    seed, threshold = params["seed"], params["threshold"]
+    if (type(seed) not in (str, int) or len(str(seed)) > 128
+            or type(threshold) is not int or not 1 <= threshold <= 2**32):
+        raise ValueError("Unsupported hash parameters")
+    # Every four-byte digest is below 2**32; nonce zero necessarily wins.
+    if threshold == 2**32:
+        return 0
+    return _hash_scan(seed, threshold.to_bytes(4, "big"), itertools.count())
 
 
 def hash_success_probability(threshold, mean_seconds, available_seconds):
@@ -282,6 +307,11 @@ class MyContractor(Contractor):
             return statistics.median(times)
 
         fast = {}
+        # Fixed work measures throughput without search luck. Include a long
+        # UTF-8 seed; the prefix is hashed once, not on each attempt.
+        fast["hash"] = max(measure(
+            lambda p: _hash_scan(p["seed"], b"\0\0\0\0", itertools.islice(itertools.count(), 150_000)),
+            {"seed": seed}) / 150_000 for seed in (370, "é" * 128))
         for bucket, mods in ((32, (1000003, 2**20)), (64, (2**63-1, 2**63))):
             coefficients = [measure(matrix_checksum, {"n": n, "mod": mod, "seed": 370}) / n**2
                             for n in (96, 192) for mod in mods]
@@ -306,6 +336,8 @@ class MyContractor(Contractor):
                                             else "Python fallback (NumPy unavailable)"))
 
     def _base_estimate(self, task):
+        if task.task_type == "hash_search" and "hash" in self._fast:
+            return 0.0005 + (2**32 / task.params["threshold"]) * self._fast["hash"]
         if task.task_type == "monte_carlo_pi" and "monte" in self._fast:
             return 0.0005 + task.params["samples"] * self._fast["monte"]
         if task.task_type == "sort_checksum":
@@ -462,6 +494,8 @@ class MyContractor(Contractor):
                 result = sort_fast(task.params)
             elif task.task_type == "monte_carlo_pi":
                 result = monte_carlo_fast(task.params)
+            elif task.task_type == "hash_search":
+                result = hash_fast(task.params)
             else:
                 result = super().execute(task)
             if tracking:

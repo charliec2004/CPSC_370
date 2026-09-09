@@ -29,51 +29,51 @@
   "sort_holdouts": [
     {
       "n": 37000,
-      "measured_compute": 0.013162458000000044,
-      "quoted_delivery": 0.1367
+      "measured_compute": 0.011829374940134585,
+      "quoted_delivery": 0.1375
     },
     {
       "n": 173000,
-      "measured_compute": 0.06702925000000004,
-      "quoted_delivery": 0.2069
+      "measured_compute": 0.06762941693887115,
+      "quoted_delivery": 0.2115
     },
     {
       "n": 617000,
-      "measured_compute": 0.30928129100000046,
-      "quoted_delivery": 0.461
+      "measured_compute": 0.3131556659936905,
+      "quoted_delivery": 0.479
     },
     {
       "n": 1700003,
-      "measured_compute": 1.0842035419999991,
-      "quoted_delivery": 1.1299
+      "measured_compute": 1.0658663329668343,
+      "quoted_delivery": 1.1833
     }
   ],
   "sort_benchmarks": [
     {
       "n": 37000,
-      "reference_seconds": 0.02880708299999979,
-      "candidate_seconds": 0.013162458000000044,
-      "speedup": 2.1885792911931565
+      "reference_seconds": 0.019015499972738326,
+      "candidate_seconds": 0.011829374940134585,
+      "speedup": 1.6074813816428057
     },
     {
       "n": 173000,
-      "reference_seconds": 0.14302737500000084,
-      "candidate_seconds": 0.06702925000000004,
-      "speedup": 2.1338053909300903
+      "reference_seconds": 0.09999174997210503,
+      "candidate_seconds": 0.06762941693887115,
+      "speedup": 1.47852450158613
     },
     {
       "n": 617000,
-      "reference_seconds": 0.5691507500000004,
-      "candidate_seconds": 0.30928129100000046,
-      "speedup": 1.840236595494551
+      "reference_seconds": 0.4171113329939544,
+      "candidate_seconds": 0.3131556659936905,
+      "speedup": 1.3319616353432304
     },
     {
       "n": 1700003,
-      "reference_seconds": 1.807111334,
-      "candidate_seconds": 1.0842035419999991,
-      "speedup": 1.6667639091701119
+      "reference_seconds": 1.350654958980158,
+      "candidate_seconds": 1.0658663329668343,
+      "speedup": 1.2671898128357388
     }
   ],
-  "source_sha256": "bb425621cba95172a4c6c49e24ebd6b6cd95f69f9cb71ee1c1109afb875f695e",
+  "source_sha256": "f8ae69820b50515b56e3be6f7e8152698a8788d79bec9c245ee5e3ca5689cea0",
   "limits": "Finite exact-answer checks and local timing samples; hash probability assumes calibrated independent uniform hashing; no proof of tournament optimality."
 }

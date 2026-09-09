@@ -1,0 +1,45 @@
+{
+  "python": "3.9.6",
+  "exact_cases": 180,
+  "boundary_and_invalid_checks": "passed",
+  "fixed_calibration_attempts": 150000,
+  "seconds_per_attempt": 4.7261555333333316e-07,
+  "benchmarks": [
+    {
+      "seed": 370,
+      "nonce": 123248,
+      "reference_seconds": 0.07567712499999946,
+      "candidate_seconds": 0.058026416999999775,
+      "runtime_reduction": 0.23323703166577492
+    },
+    {
+      "seed": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "nonce": 54320,
+      "reference_seconds": 0.03631258400000004,
+      "candidate_seconds": 0.026605250000000247,
+      "runtime_reduction": 0.2673269960628464
+    },
+    {
+      "seed": "\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9",
+      "nonce": 18716,
+      "reference_seconds": 0.014849250000000147,
+      "candidate_seconds": 0.008635833000000481,
+      "runtime_reduction": 0.4184330521743256
+    }
+  ],
+  "protocol": {
+    "transport": "real WebSocket on 127.0.0.1",
+    "task_types_delivered": [
+      "monte_carlo_pi",
+      "prime_count",
+      "hash_search",
+      "sort_checksum",
+      "matmul_mod"
+    ],
+    "settlements_recorded": 5,
+    "registrations": 1,
+    "limitation": "Artificial generous budgets, supplied rates, and settlements; not a profit or timing test."
+  },
+  "source_sha256": "f8ae69820b50515b56e3be6f7e8152698a8788d79bec9c245ee5e3ca5689cea0",
+  "limits": "Offline measurements; geometric deadline risk remains modelled, not guaranteed."
+}
