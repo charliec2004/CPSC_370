@@ -1,0 +1,351 @@
+{
+  "python": "3.12.13",
+  "scenarios": [
+    {
+      "scenario": "steady",
+      "injected_delay_per_delivery": 0.03,
+      "deadline": 3,
+      "overlapping_awards": false,
+      "jobs": [
+        {
+          "task_type": "monte_carlo_pi",
+          "runtime": 0.06941079196985811,
+          "quote": 0.1642,
+          "verdict": "correct",
+          "price": 1.4076,
+          "cost": 0.06941079196985811,
+          "penalty": 0,
+          "profit": 1.3381892080301419
+        },
+        {
+          "task_type": "sort_checksum",
+          "runtime": 0.10531279107090086,
+          "quote": 0.2086,
+          "verdict": "correct",
+          "price": 1.4503,
+          "cost": 0.10531279107090086,
+          "penalty": 0,
+          "profit": 1.344987208929099
+        },
+        {
+          "task_type": "prime_count",
+          "runtime": 0.032728832913562655,
+          "quote": 0.1237,
+          "verdict": "correct",
+          "price": 1.3687,
+          "cost": 0.032728832913562655,
+          "penalty": 0,
+          "profit": 1.3359711670864374
+        },
+        {
+          "task_type": "matmul_mod",
+          "runtime": 0.03437308396678418,
+          "quote": 0.059,
+          "verdict": "correct",
+          "price": 1.3066,
+          "cost": 0.03437308396678418,
+          "penalty": 0,
+          "profit": 1.2722269160332158
+        },
+        {
+          "task_type": "hash_search",
+          "runtime": 0.06760862504597753,
+          "quote": 0.0867,
+          "verdict": "correct",
+          "price": 1.3333,
+          "cost": 0.06760862504597753,
+          "penalty": 0,
+          "profit": 1.2656913749540224
+        },
+        {
+          "task_type": "monte_carlo_pi",
+          "runtime": 0.06788441608659923,
+          "quote": 0.0944,
+          "verdict": "correct",
+          "price": 1.3416,
+          "cost": 0.06788441608659923,
+          "penalty": 0,
+          "profit": 1.2737155839134007
+        },
+        {
+          "task_type": "sort_checksum",
+          "runtime": 0.10418999998364598,
+          "quote": 0.1373,
+          "verdict": "correct",
+          "price": 1.3828,
+          "cost": 0.10418999998364598,
+          "penalty": 0,
+          "profit": 1.278610000016354
+        },
+        {
+          "task_type": "prime_count",
+          "runtime": 0.03311316703911871,
+          "quote": 0.055,
+          "verdict": "correct",
+          "price": 1.3038,
+          "cost": 0.03311316703911871,
+          "penalty": 0,
+          "profit": 1.2706868329608814
+        },
+        {
+          "task_type": "matmul_mod",
+          "runtime": 0.03452462505083531,
+          "quote": 0.0574,
+          "verdict": "correct",
+          "price": 1.3061,
+          "cost": 0.03452462505083531,
+          "penalty": 0,
+          "profit": 1.2715753749491647
+        },
+        {
+          "task_type": "hash_search",
+          "runtime": 0.06730737502221018,
+          "quote": 0.0857,
+          "verdict": "correct",
+          "price": 1.3333,
+          "cost": 0.06730737502221018,
+          "penalty": 0,
+          "profit": 1.2659926249777897
+        }
+      ],
+      "total_profit_in_local_model": 12.917646291850508,
+      "missed_deadlines": 0,
+      "cleanup_and_graceful_stop": "passed"
+    },
+    {
+      "scenario": "slower_delivery",
+      "injected_delay_per_delivery": 0.15,
+      "deadline": 3,
+      "overlapping_awards": false,
+      "jobs": [
+        {
+          "task_type": "monte_carlo_pi",
+          "runtime": 0.18776970799081028,
+          "quote": 0.1642,
+          "verdict": "correct",
+          "price": 1.4076,
+          "cost": 0.18776970799081028,
+          "penalty": 0,
+          "profit": 1.2198302920091897
+        },
+        {
+          "task_type": "sort_checksum",
+          "runtime": 0.22818470804486424,
+          "quote": 0.2086,
+          "verdict": "correct",
+          "price": 1.4503,
+          "cost": 0.22818470804486424,
+          "penalty": 0,
+          "profit": 1.2221152919551357
+        },
+        {
+          "task_type": "prime_count",
+          "runtime": 0.1525877920212224,
+          "quote": 0.1237,
+          "verdict": "correct",
+          "price": 1.3687,
+          "cost": 0.1525877920212224,
+          "penalty": 0,
+          "profit": 1.2161122079787776
+        },
+        {
+          "task_type": "matmul_mod",
+          "runtime": 0.15466287499293685,
+          "quote": 0.1782,
+          "verdict": "correct",
+          "price": 1.4211,
+          "cost": 0.15466287499293685,
+          "penalty": 0,
+          "profit": 1.2664371250070632
+        },
+        {
+          "task_type": "hash_search",
+          "runtime": 0.18830862501636147,
+          "quote": 0.2059,
+          "verdict": "correct",
+          "price": 1.4477,
+          "cost": 0.18830862501636147,
+          "penalty": 0,
+          "profit": 1.2593913749836385
+        },
+        {
+          "task_type": "monte_carlo_pi",
+          "runtime": 0.18784412497188896,
+          "quote": 0.2143,
+          "verdict": "correct",
+          "price": 1.4559,
+          "cost": 0.18784412497188896,
+          "penalty": 0,
+          "profit": 1.268055875028111
+        },
+        {
+          "task_type": "sort_checksum",
+          "runtime": 0.22475570905953646,
+          "quote": 0.2579,
+          "verdict": "correct",
+          "price": 1.4978,
+          "cost": 0.22475570905953646,
+          "penalty": 0,
+          "profit": 1.2730442909404636
+        },
+        {
+          "task_type": "prime_count",
+          "runtime": 0.15216991701163352,
+          "quote": 0.175,
+          "verdict": "correct",
+          "price": 1.4183,
+          "cost": 0.15216991701163352,
+          "penalty": 0,
+          "profit": 1.2661300829883664
+        },
+        {
+          "task_type": "matmul_mod",
+          "runtime": 0.15434579190332443,
+          "quote": 0.1773,
+          "verdict": "correct",
+          "price": 1.4205,
+          "cost": 0.15434579190332443,
+          "penalty": 0,
+          "profit": 1.2661542080966757
+        },
+        {
+          "task_type": "hash_search",
+          "runtime": 0.18747454206459224,
+          "quote": 0.2056,
+          "verdict": "correct",
+          "price": 1.4477,
+          "cost": 0.18747454206459224,
+          "penalty": 0,
+          "profit": 1.2602254579354077
+        }
+      ],
+      "total_profit_in_local_model": 12.517496206922829,
+      "missed_deadlines": 0,
+      "cleanup_and_graceful_stop": "passed"
+    },
+    {
+      "scenario": "overlapping_awards",
+      "injected_delay_per_delivery": 0.12,
+      "deadline": 3,
+      "overlapping_awards": true,
+      "jobs": [
+        {
+          "task_type": "monte_carlo_pi",
+          "runtime": 0.17592108401004225,
+          "quote": 0.1642,
+          "verdict": "correct",
+          "price": 1.4076,
+          "cost": 0.17592108401004225,
+          "penalty": 0,
+          "profit": 1.2316789159899577
+        },
+        {
+          "task_type": "sort_checksum",
+          "runtime": 0.35554895794484764,
+          "quote": 0.3727,
+          "verdict": "correct",
+          "price": 1.6078,
+          "cost": 0.35554895794484764,
+          "penalty": 0,
+          "profit": 1.2522510420551523
+        },
+        {
+          "task_type": "prime_count",
+          "runtime": 0.479569417075254,
+          "quote": 0.4963,
+          "verdict": "correct",
+          "price": 1.7265,
+          "cost": 0.479569417075254,
+          "penalty": 0,
+          "profit": 1.246930582924746
+        },
+        {
+          "task_type": "matmul_mod",
+          "runtime": 0.6126412079902366,
+          "quote": 0.6225,
+          "verdict": "correct",
+          "price": 1.8476,
+          "cost": 0.6126412079902366,
+          "penalty": 0,
+          "profit": 1.2349587920097633
+        },
+        {
+          "task_type": "hash_search",
+          "runtime": 0.7587040420621634,
+          "quote": 0.7764,
+          "verdict": "correct",
+          "price": 1.9953,
+          "cost": 0.7587040420621634,
+          "penalty": 0,
+          "profit": 1.2365959579378367
+        }
+      ],
+      "total_profit_in_local_model": 6.202415290917456,
+      "missed_deadlines": 0,
+      "cleanup_and_graceful_stop": "passed"
+    },
+    {
+      "scenario": "unexpected_delay_spike",
+      "injected_delay_per_delivery": 0.7,
+      "deadline": 1.5,
+      "overlapping_awards": true,
+      "jobs": [
+        {
+          "task_type": "monte_carlo_pi",
+          "runtime": 0.7493917499668896,
+          "quote": 0.1642,
+          "verdict": "correct",
+          "price": 1.4076,
+          "cost": 0.7493917499668896,
+          "penalty": 0,
+          "profit": 0.6582082500331103
+        },
+        {
+          "task_type": "sort_checksum",
+          "runtime": 1.5157853750279173,
+          "quote": 0.3727,
+          "verdict": "late",
+          "price": 1.6078,
+          "cost": 1.5157853750279173,
+          "penalty": 2.5,
+          "profit": -4.015785375027917
+        },
+        {
+          "task_type": "prime_count",
+          "runtime": 2.2201473750174046,
+          "quote": 0.4963,
+          "verdict": "timeout",
+          "price": 1.7265,
+          "cost": 0.4963,
+          "penalty": 2.5,
+          "profit": -2.9963
+        },
+        {
+          "task_type": "matmul_mod",
+          "runtime": 2.945096791954711,
+          "quote": 0.6225,
+          "verdict": "timeout",
+          "price": 1.8476,
+          "cost": 0.6225,
+          "penalty": 2.5,
+          "profit": -3.1225
+        },
+        {
+          "task_type": "hash_search",
+          "runtime": 3.660144457942806,
+          "quote": 0.7764,
+          "verdict": "timeout",
+          "price": 1.9953,
+          "cost": 0.7764,
+          "penalty": 2.5,
+          "profit": -3.2763999999999998
+        }
+      ],
+      "total_profit_in_local_model": -12.752777124994807,
+      "missed_deadlines": 4,
+      "cleanup_and_graceful_stop": "passed"
+    }
+  ],
+  "source_sha256": "4eebb3fb0e61df9af6aa5db751f03610843b2304b85bcf1c236eaddf493f5f79",
+  "limits": "One contractor, synthetic local accounting and transport delay; no competitors, tournament profit prediction, real network disconnects, or server timeout-before-INFORM handling."
+}

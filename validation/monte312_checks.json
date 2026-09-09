@@ -7,26 +7,26 @@
   "benchmarks": [
     {
       "samples": 173003,
-      "reference_seconds": 0.01562645798549056,
-      "candidate_seconds": 0.012519916985183954,
-      "speedup": 1.248127923210903,
-      "quoted_delivery": 0.137
+      "reference_seconds": 0.02835737494751811,
+      "candidate_seconds": 0.04421558300964534,
+      "speedup": 0.641343458964052,
+      "quoted_delivery": 0.1421
     },
     {
       "samples": 617003,
-      "reference_seconds": 0.05617733392864466,
-      "candidate_seconds": 0.045595915988087654,
-      "speedup": 1.232069423571214,
-      "quoted_delivery": 0.1793
+      "reference_seconds": 0.07403504103422165,
+      "candidate_seconds": 0.04505033395253122,
+      "speedup": 1.6433849549757196,
+      "quoted_delivery": 0.1975
     },
     {
       "samples": 2000003,
-      "reference_seconds": 0.18392375006806105,
-      "candidate_seconds": 0.14856374997179955,
-      "speedup": 1.2380123018096512,
-      "quoted_delivery": 0.311
+      "reference_seconds": 0.1805114169837907,
+      "candidate_seconds": 0.14769008406437933,
+      "speedup": 1.2222311208456234,
+      "quoted_delivery": 0.37
     }
   ],
-  "source_sha256": "8595383e96c4caa27990ce2d14f3106388d8da6ec4c26c3da66069c82b3ffd25",
+  "source_sha256": "4eebb3fb0e61df9af6aa5db751f03610843b2304b85bcf1c236eaddf493f5f79",
   "limits": "Low-priority measurements while practice remains online; OS scheduling and competing work affect timings. No guarantee of beating another machine."
 }

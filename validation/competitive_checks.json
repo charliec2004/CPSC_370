@@ -29,49 +29,49 @@
   "sort_holdouts": [
     {
       "n": 37000,
-      "measured_compute": 0.005175792030058801,
-      "quoted_delivery": 0.1252
+      "measured_compute": 0.005071708001196384,
+      "quoted_delivery": 0.1253
     },
     {
       "n": 173000,
-      "measured_compute": 0.02387899998575449,
-      "quoted_delivery": 0.1456
+      "measured_compute": 0.02418633399065584,
+      "quoted_delivery": 0.1458
     },
     {
       "n": 617000,
-      "measured_compute": 0.08686695795040578,
-      "quoted_delivery": 0.2195
+      "measured_compute": 0.0877914170268923,
+      "quoted_delivery": 0.2201
     },
     {
       "n": 1700003,
-      "measured_compute": 0.24252491595689207,
-      "quoted_delivery": 0.4139
+      "measured_compute": 0.24380770802963525,
+      "quoted_delivery": 0.4157
     }
   ],
   "sort_benchmarks": [
     {
       "n": 37000,
-      "reference_seconds": 0.018779292004182935,
-      "candidate_seconds": 0.005175792030058801,
-      "speedup": 3.6282933887452944
+      "reference_seconds": 0.019066207925789058,
+      "candidate_seconds": 0.005071708001196384,
+      "speedup": 3.7593268226978878
     },
     {
       "n": 173000,
-      "reference_seconds": 0.09579141694121063,
-      "candidate_seconds": 0.02387899998575449,
-      "speedup": 4.011533858132961
+      "reference_seconds": 0.10139837500173599,
+      "candidate_seconds": 0.02418633399065584,
+      "speedup": 4.1923829812699305
     },
     {
       "n": 617000,
-      "reference_seconds": 0.3905269579263404,
-      "candidate_seconds": 0.08686695795040578,
-      "speedup": 4.4956905035088335
+      "reference_seconds": 0.40542929200455546,
+      "candidate_seconds": 0.0877914170268923,
+      "speedup": 4.618097141322644
     },
     {
       "n": 1700003,
-      "reference_seconds": 1.2798159999074414,
-      "candidate_seconds": 0.24252491595689207,
-      "speedup": 5.277049555332797
+      "reference_seconds": 1.3245698750251904,
+      "candidate_seconds": 0.24380770802963525,
+      "speedup": 5.432846589346497
     }
   ],
   "source_sha256": "4eebb3fb0e61df9af6aa5db751f03610843b2304b85bcf1c236eaddf493f5f79",

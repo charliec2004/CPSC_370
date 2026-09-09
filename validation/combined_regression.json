@@ -1,0 +1,52 @@
+{
+  "python": "3.12.13",
+  "production_source_sha256": "4eebb3fb0e61df9af6aa5db751f03610843b2304b85bcf1c236eaddf493f5f79",
+  "checks": [
+    {
+      "script": "prove_optimizations.py",
+      "exit_code": 0,
+      "output_sha256": "3f6e34d2b02480a4df2af0faa95a6611e204ec5c974cb6dc84d7684d10bd859d"
+    },
+    {
+      "script": "check_monte.py",
+      "exit_code": 0,
+      "output_sha256": "bc94a7594fd28192e4effaf879bd529c802198afe62e4a65d54b50d04bf703ae"
+    },
+    {
+      "script": "check_hash.py",
+      "exit_code": 0,
+      "output_sha256": "dfac2bc06af4dc7c42f27f7658d476c24718597e1f3f428616151efe03c93d38"
+    },
+    {
+      "script": "check_sort_numpy.py",
+      "exit_code": 0,
+      "output_sha256": "22256350c877553227042d0b6c8591c45a8fb4aa02ecbe1155fbcb43e5dd6c39"
+    },
+    {
+      "script": "check_competitive.py",
+      "exit_code": 0,
+      "output_sha256": "03f25dc3086736c48b3ff0c71753d76193968f0cc454f52674c37471e35b373a"
+    },
+    {
+      "script": "check_queue.py",
+      "exit_code": 0,
+      "output_sha256": "d72fa2f1b6090451ef9a985390092fcb0af204da9632b349d7b9357349b11e8d"
+    },
+    {
+      "script": "check_delivery.py",
+      "exit_code": 0,
+      "output_sha256": "f0f0ea67f74cb77d40f0d172e3324071f2e4730ef78c011464876cfd87c499c8"
+    },
+    {
+      "script": "check_launch.py",
+      "exit_code": 0,
+      "output_sha256": "f28ded99b6f11706a0ac83cb2468fe4c23f4038427990d2ec69480b685994537"
+    },
+    {
+      "script": "check_pricing.py",
+      "exit_code": 0,
+      "output_sha256": "bb547f200583dcc2dea11ed2af38590e2ada5017c7ba440d3cf9412221492f41"
+    }
+  ],
+  "scope": "All nine scripts run sequentially using the production Python 3.12 environment; localhost integration only."
+}

@@ -64,3 +64,5 @@ This tests the actual implementation over a local WebSocket and makes no connect
 Read the [assignment](CPSC370-Assignment1-ContractNet.pdf), [starter README](contract-net/student/README.md), and [wire protocol](contract-net/PROTOCOL.md) for the full requirements.
 
 The final course submission is the tournament version of `my_contractor.py` and one PDF of at most two pages covering strategy and tournament analysis.
+
+The [combined offline validation](COMBINED_VALIDATION.md) tests the integrated version under delivery delays and overlapping awards, including a deliberately failing delay-spike scenario.
