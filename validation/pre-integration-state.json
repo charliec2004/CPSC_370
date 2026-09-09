@@ -1,0 +1,19 @@
+{
+  "now": 1788915160498,
+  "team": {
+    "name": "Auctioneers",
+    "connected": 1,
+    "machine": "Darwin arm64",
+    "benchmark": 13632924.3,
+    "bids": 338,
+    "refusals": 0,
+    "won": 175,
+    "completed": 171,
+    "failed": 4,
+    "revenue": 328.39,
+    "cost": 237.58,
+    "penalties": 5.33,
+    "profit": 85.48,
+    "est_error": 0.302
+  }
+}

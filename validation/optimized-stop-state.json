@@ -1,0 +1,19 @@
+{
+  "now": 1788915741657,
+  "team": {
+    "name": "Auctioneers",
+    "connected": 1,
+    "machine": "M1 Pro / Python 3.9.6 / optimized",
+    "benchmark": 14011620.24,
+    "bids": 387,
+    "refusals": 0,
+    "won": 225,
+    "completed": 220,
+    "failed": 5,
+    "revenue": 390.39,
+    "cost": 280.75,
+    "penalties": 6.7,
+    "profit": 102.94,
+    "est_error": 0.331
+  }
+}

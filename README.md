@@ -6,6 +6,8 @@ Group workspace for Assignment 1: build a Python contractor that bids on computa
 
 **Tournament machine:** Charles's laptop. Tune and validate the final strategy on this machine.
 
+The agent now uses exact optimized matrix and prime executors. Startup measures their speed, and settlement history adjusts computation estimates and delivery overhead. The price remains 1.28 times predicted billed cost, including queued work and delivery time. The existing Python 3.9.6 environment on Charles's M1 Pro is the verified runtime; no new packages are required.
+
 ## Setup
 
 ```bash
@@ -28,6 +30,18 @@ python my_contractor.py --name Auctioneers --url 'wss://contractnet.blackdial.wo
 ```
 
 The agent reads `.env` beside `my_contractor.py`, regardless of your working directory. An existing `CLASS_TOKEN` environment variable takes precedence; `--token` overrides both. Values may be plain or quoted and are read literally, without shell expansion. Coordinate runs: two agents using the same name cannot stay connected at once.
+
+On the tested macOS runtime, Ctrl+C requests a graceful stop: the agent refuses new work and waits for pending bids and awarded contracts to settle before disconnecting. Wait for it to exit before another teammate starts it.
+
+## Validation and evidence
+
+The [optimization report](OPTIMIZATION_PROOF.md) contains correctness arguments, repeatable benchmarks, and live trial results. From the repository root, run the broader checks with:
+
+```bash
+contract-net/student/.venv/bin/python validation/prove_optimizations.py
+```
+
+This tests the actual implementation over a local WebSocket and makes no connection to the class server. Pause the practice agent before benchmarking. The supplied `python verify.py` remains the quick reference-answer check.
 
 ## Working together
 

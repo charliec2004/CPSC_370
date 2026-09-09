@@ -11,7 +11,8 @@ All times are in seconds. Replace the teammate placeholders with your names and 
 | Task / detail | Charles | Teammate 2 | Teammate 3 |
 |---|---|---|---|
 | Run date | 2026-09-08 | — | — |
-| Laptop model / chip | To fill in | — | — |
+| Laptop model / chip | MacBook Pro / Apple M1 Pro | — | — |
+| Python for this recorded run | 3.9.6 | — | — |
 | `monte_carlo_pi` | 0.010 | — | — |
 | `prime_count` | 0.031 | — | — |
 | `hash_search` | 0.060 | — | — |
