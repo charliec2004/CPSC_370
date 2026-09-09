@@ -12,6 +12,20 @@ After sorting, the answer is the weighted sum modulo `2**61 - 1`. Exact Python i
 
 Startup benchmarks the actual optimized sort at 100,000, 400,000, and 1,200,000 elements and uses the larger measured seconds-per-n-log-n coefficient. Per-task compute corrections still learn from successful local timings. This does not reuse answers or predict random outcomes.
 
+### Matrices: faster generation without changing the random sequence
+
+The checksum identity remains unchanged. Matrix input generation now also uses exact rejection sampling: draw `mod.bit_length()` bits, reject values greater than or equal to `mod`, and preserve all draws in reference order. This mirrors the supported CPython runtime's `randrange(mod)`, including power-of-two moduli, modulus one, and rejected draws. It removes repeated method dispatch while preserving every matrix entry.
+
+Startup measures the new executor automatically. In the latest repeated 260×260 benchmark, reference computation took about 0.972 seconds and the new executor took 0.0105 seconds (about 93× faster than reference). Our earlier optimized executor took roughly 0.05 seconds on this case. The matrix reference comparisons and held-out timing cases are rerun against it. Performance is still limited by the laptop and delivery latency; faster local computation does not imply the same factor of improvement in server-measured delivery time.
+
+### Queue reservations: count each job once
+
+An original delivery quote includes the jobs ahead of it. Summing those full quotes again counts earlier work multiple times. Our queue now adds each pending/awarded job's own compute estimate and delivery allowance, subtracting elapsed execution for running work. The overrun guard remains, and a timed-out task that is still computing remains reserved.
+
+For three one-second tasks with a 0.12-second delivery allowance, the estimates are approximately 1.12, 2.24, and 3.36 seconds. The previous third quote was approximately 4.48 seconds because it counted the first job again. Missing quote details retain the full SDK estimate as a conservative fallback.
+
+The [queue checks](validation/queue_checks.json) exercise three overlapping CFPs through the actual SDK, partial running work, overrun refusal, ongoing computation after timeout, rejection cleanup, and fallback behavior. This can improve admission and auction scores when auctions overlap; the practice room's serial configuration does not demonstrate live concurrency behavior.
+
 ### Pricing: react quickly to losing
 
 For non-hash tasks, keep the existing minimum of `1.28 × predicted billed cost`. Let `share` be the fraction of budget remaining above that minimum:

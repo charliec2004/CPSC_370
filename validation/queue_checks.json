@@ -1,0 +1,17 @@
+{
+  "wire_estimates": [
+    1.1201,
+    2.2401,
+    3.36
+  ],
+  "incremental_queue": 3.36,
+  "checks": [
+    "three overlapping CFPs",
+    "partial running work",
+    "overrun refusal",
+    "timed-out computation remains reserved",
+    "rejection releases reservation",
+    "missing quote fallback"
+  ],
+  "limitation": "Deterministic SDK event replay, not live concurrent-server timing."
+}

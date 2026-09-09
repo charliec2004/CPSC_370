@@ -86,15 +86,25 @@ def matrix_parameters(params):
 def matrix_checksum(params):
     """Sum(A B) = dot(column_sums(A), row_sums(B)), modulo m."""
     n, mod, seed = matrix_parameters(params)
-    rng = random.Random(seed)
+    bits = random.Random(seed).getrandbits
+    width = mod.bit_length()
     columns = [0] * n
     # Preserve every random draw and the reference's row-major draw order.
     for _ in range(n):
         for k in range(n):
-            columns[k] += rng.randrange(mod)
+            value = bits(width)
+            while value >= mod:
+                value = bits(width)
+            columns[k] += value
     total = 0
     for k in range(n):
-        total += columns[k] * sum(rng.randrange(mod) for _ in range(n))
+        row_sum = 0
+        for _ in range(n):
+            value = bits(width)
+            while value >= mod:
+                value = bits(width)
+            row_sum += value
+        total += columns[k] * row_sum
     return total % mod
 
 
@@ -277,16 +287,30 @@ class MyContractor(Contractor):
 
     @property
     def queue_seconds(self):
-        total = super().queue_seconds
+        now = time.perf_counter()
         with self._timing_lock:
             running = self._running
         if running is not None:
             task_id, started, predicted = running
-            remaining = predicted - (time.perf_counter() - started)
+            remaining = predicted - (now - started)
             # Once current work overruns its estimate, don't promise new jobs
             # based on the SDK's clamped-to-zero remaining time.
             if remaining <= 0:
                 return float("inf")
+        total = 0.0
+        for task_id, commitment in self._commitments.items():
+            quote = self._quotes.get(task_id)
+            # A delivery quote contains the queue that preceded it. Reserve
+            # only this job's compute + overhead, not that earlier queue again.
+            seconds = (quote["compute"] + quote["overhead"] if quote is not None
+                       else commitment.est_seconds)
+            if running is not None and task_id == running[0]:
+                seconds = remaining + (quote["overhead"] if quote is not None else 0)
+            elif commitment.started_at is not None:
+                seconds = max(0.0, seconds - (now - commitment.started_at))
+            total += seconds
+        if running is not None:
+            task_id = running[0]
             if task_id not in self._commitments:
                 total += remaining  # Timed-out work may still be computing.
         return total

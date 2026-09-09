@@ -121,7 +121,7 @@ These constants are starting heuristics, not optimized guarantees. Using a high 
 
 ## Queue, reconnect, and shutdown behavior
 
-The SDK reserves time for pending bids as well as awarded contracts, and executes work serially. Its queue estimate can be conservative because stored quotes include delivery time and may already include earlier queued work. We have not built an optimal scheduler for simultaneous auctions.
+We reserve time for pending bids as well as awarded contracts, and execute work serially. Each reservation now contributes only its own compute estimate and delivery allowance. We do not add the earlier queue embedded in its original delivery quote a second time. Partial running work is subtracted, overruns still block new bids, and a missing quote falls back to the SDK reservation. This remains conservative because pending bids may lose; it is not an optimal scheduler for simultaneous auctions.
 
 Our additional guard refuses new promises while a running computation exceeds its predicted duration. Otherwise the SDK's remaining-time estimate would clamp to zero and could make a busy machine appear free. If timed-out work is still running, we account for it even after its commitment was removed.
 
