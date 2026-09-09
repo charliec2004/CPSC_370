@@ -1,0 +1,32 @@
+{
+  "python": "3.9.6 tested runtime",
+  "numpy": "2.0.2",
+  "seeded_cases_both_backends": 111,
+  "boundary_checks": "circle boundary, adjacent floats, chunk boundary, exactly two draws per point",
+  "resource_guards": 3,
+  "benchmarks": [
+    {
+      "samples": 173003,
+      "reference_seconds": 0.05196437499999984,
+      "candidate_seconds": 0.023758583000000222,
+      "speedup": 2.1871832592036045,
+      "quoted_delivery": 0.1422
+    },
+    {
+      "samples": 617003,
+      "reference_seconds": 0.12450883400000023,
+      "candidate_seconds": 0.06127424999999942,
+      "speedup": 2.031992786529438,
+      "quoted_delivery": 0.1977
+    },
+    {
+      "samples": 2000003,
+      "reference_seconds": 0.36691262499999944,
+      "candidate_seconds": 0.15924141599999952,
+      "speedup": 2.304128123301796,
+      "quoted_delivery": 0.3707
+    }
+  ],
+  "source_sha256": "5fc4cbb99e0f79bc704ce4e1ae1b306f0108400d36b24b121d0c5c6c738cc8f2",
+  "limits": "Low-priority measurements while practice remains online; OS scheduling and competing work affect timings. No guarantee of beating another machine."
+}

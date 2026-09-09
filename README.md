@@ -8,7 +8,7 @@ Group workspace for Assignment 1: build a Python contractor that bids on computa
 
 **Tournament machine:** Charles's laptop. Tune and validate the final strategy on this machine.
 
-The agent uses exact optimized matrix, prime, and sorting executors. Startup measures their speed, and settlements adjust computation estimates and delivery overhead. The default `competitive` mode lowers prices quickly after losses and screens hash-search deadline risk. Read the [current strategy](COMPETITIVE_STRATEGY.md). The existing Python 3.9.6 environment on Charles's M1 Pro is the verified runtime; no new packages are required.
+The agent uses exact optimized matrix, prime, sorting, and Monte Carlo executors. Startup measures their speed, and settlements adjust computation estimates and delivery overhead. The default `competitive` mode lowers prices quickly after losses and screens hash-search deadline risk. Read the [current strategy](COMPETITIVE_STRATEGY.md). The existing Python 3.9.6 environment on Charles's M1 Pro is the verified runtime; optional NumPy acceleration is described below.
 
 ## Setup
 
@@ -18,10 +18,14 @@ cd CPSC_370/contract-net/student
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
+# Optional acceleration, tested on Python 3.9.6:
+python -m pip install -r requirements-accelerated.txt
 python verify.py
 ```
 
 On Windows, activate the environment with `.venv\Scripts\activate`.
+
+NumPy 2.0.2 accelerates Monte Carlo while preserving Python's exact random stream. Without NumPy, the agent uses and calibrates a Python fallback. See [Monte Carlo correctness and measurements](MONTE_CARLO_PROOF.md). The pinned optional package supports Python 3.9–3.12.
 
 ## Practice
 
@@ -30,6 +34,8 @@ The [practice dashboard](https://contractnet.blackdial.workers.dev/dev?room=prac
 ```bash
 python my_contractor.py --name Auctioneers --url 'wss://contractnet.blackdial.workers.dev/agent?room=practice'
 ```
+
+Machine labels use the SDK default (`Darwin arm64` on this Mac); there is no custom `--machine` launch option.
 
 The default is `--pricing competitive`. The earlier `--pricing adaptive` and `--pricing markup` modes remain available to compare pricing; all modes use the current faster executors.
 

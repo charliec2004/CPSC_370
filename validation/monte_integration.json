@@ -1,0 +1,27 @@
+{
+  "protocol": {
+    "transport": "real WebSocket on 127.0.0.1",
+    "task_types_delivered": [
+      "monte_carlo_pi",
+      "prime_count",
+      "hash_search",
+      "sort_checksum",
+      "matmul_mod"
+    ],
+    "settlements_recorded": 5,
+    "registrations": 1,
+    "limitation": "Artificial generous budgets, supplied rates, and settlements; not a profit or timing test."
+  },
+  "lifecycle": [
+    "shutdown refuses new bids and preserves outstanding work",
+    "duplicate award enqueues once",
+    "reconnect drops only pending bids",
+    "overrunning work prevents new promises",
+    "compute bias learns from raw model",
+    "overhead excludes known queued work",
+    "hash variance does not train throughput",
+    "invalid bids release local quote and commitment"
+  ],
+  "baseline_bids": 6,
+  "source_sha256": "5fc4cbb99e0f79bc704ce4e1ae1b306f0108400d36b24b121d0c5c6c738cc8f2"
+}

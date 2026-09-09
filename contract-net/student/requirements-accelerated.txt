@@ -1,0 +1,2 @@
+# Tested acceleration dependency for the team's Python 3.9.6 environment.
+numpy==2.0.2

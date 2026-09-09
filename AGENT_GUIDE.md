@@ -79,7 +79,7 @@ For matrices, the reference's cubic work model no longer describes our faster al
 
 For primes, we separately measure a coefficient for base-prime generation and segment setup, and a coefficient for marking the interval. The prediction accounts for the square root of the upper bound, the number of segments, and the interval width. Both optimized models add a small 0.0005-second fixed allowance.
 
-Monte Carlo and hashing retain the supplied implementations and SDK calibration. Sorting now uses exact rejection sampling and one final modular reduction, with an additional startup timing model described in the current strategy. The benchmark number reported during registration still comes from the SDK's standard calibration; the fast executors have additional timing models inside our agent.
+Hashing retains the supplied implementation and SDK calibration. Monte Carlo now batches Python's exact random draws through NumPy float64 arithmetic when installed, with a calibrated Python fallback. See the [Monte Carlo proof](MONTE_CARLO_PROOF.md). Sorting now uses exact rejection sampling and one final modular reduction, with an additional startup timing model described in the current strategy. The benchmark number reported during registration still comes from the SDK's standard calibration; the fast executors have additional timing models inside our agent.
 
 Calibration can become inaccurate as the laptop heats up or other applications consume resources. Ten holdout cases supported the new models in local tests; those checks cannot guarantee every future deadline.
 
@@ -125,7 +125,7 @@ We reserve time for pending bids as well as awarded contracts, and execute work 
 
 Our additional guard refuses new promises while a running computation exceeds its predicted duration. Otherwise the SDK's remaining-time estimate would clamp to zero and could make a busy machine appear free. If timed-out work is still running, we account for it even after its commitment was removed.
 
-On reconnect, we discard local reservations for unawarded bids while preserving awarded work. The SDK replays currently open announcements and handles reconnecting and result delivery. Duplicate award messages are prevented from enqueuing the same work twice.
+On reconnect, we discard local reservations for unawarded bids while preserving awarded work. The SDK replays currently open announcements and handles reconnecting and result delivery. Duplicate award messages are prevented from enqueuing the same work twice. If an auction closes between registration replay and bid arrival, an identified `bidding_closed` error releases only that unawarded reservation. Unidentified errors and already awarded work are preserved.
 
 We also fixed a Python 3.9 compatibility issue by creating the SDK's initially empty work queue on the running event loop, inside our subclass. The SDK files themselves are unchanged.
 
@@ -160,7 +160,7 @@ All submitted logic is in [my_contractor.py](contract-net/student/my_contractor.
 | Function or method | Responsibility |
 |---|---|
 | `matrix_parameters`, `prime_parameters`, `_supported` | Validate supported inputs and resource limits |
-| `matrix_checksum`, `prime_sieve`, `sort_fast` | Compute exact optimized answers |
+| `matrix_checksum`, `prime_sieve`, `sort_fast`, `monte_carlo_fast` | Compute exact optimized answers |
 | `hash_success_probability` | Model the chance of completing hash work within available time |
 | `calibrate_fast`, `_base_estimate`, `estimate` | Measure speed and predict local computation |
 | `queue_seconds` | Account for reservations and guard against running overruns |

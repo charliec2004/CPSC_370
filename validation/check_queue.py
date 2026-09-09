@@ -38,9 +38,24 @@ def main():
         # Missing detail uses the full SDK reservation as a conservative fallback.
         agent._quotes.pop(3)
         assert math.isclose(agent.queue_seconds,estimates[2])
+        # An auction can close between registration replay and PROPOSE arrival.
+        await agent._dispatch({'type':'ERROR','code':'bidding_closed',
+            'message':'task 3 is not accepting proposals'})
+        assert 3 not in agent._commitments
+        assert agent.queue_seconds==0
+        await agent._handle_cfp({'task_id':4,'task_type':'monte_carlo_pi',
+            'params':{'seed':1,'samples':100},'budget':100,'deadline_s':30})
+        await agent._dispatch({'type':'ERROR','code':'bidding_closed','message':'unspecified task'})
+        assert 4 in agent._commitments
+        agent._awarded.add(4)
+        await agent._dispatch({'type':'ERROR','code':'bidding_closed','task_id':4})
+        assert 4 in agent._commitments
+        agent._awarded.remove(4)
+        await agent._dispatch({'type':'ERROR','code':'bidding_closed','task_id':4})
+        assert agent.queue_seconds==0 and 4 not in agent._quotes
         return {'wire_estimates':estimates,'incremental_queue':3.36,
           'checks':['three overlapping CFPs','partial running work','overrun refusal',
-                    'timed-out computation remains reserved','rejection releases reservation','missing quote fallback'],
+                    'timed-out computation remains reserved','rejection releases reservation','missing quote fallback','closed auction clears only identified unawarded bids'],
           'limitation':'Deterministic SDK event replay, not live concurrent-server timing.'}
     result=asyncio.run(run())
     Path('validation/queue_checks.json').write_text(json.dumps(result,indent=2)+'\n')

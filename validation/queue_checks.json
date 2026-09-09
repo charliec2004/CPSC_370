@@ -11,7 +11,8 @@
     "overrun refusal",
     "timed-out computation remains reserved",
     "rejection releases reservation",
-    "missing quote fallback"
+    "missing quote fallback",
+    "closed auction clears only identified unawarded bids"
   ],
   "limitation": "Deterministic SDK event replay, not live concurrent-server timing."
 }

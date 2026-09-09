@@ -33,6 +33,7 @@ import json
 import math
 import os
 import random
+import re
 import signal
 import statistics
 import threading
@@ -40,6 +41,38 @@ import time
 from pathlib import Path
 
 from contractnet import Bid, Contractor, Task
+
+try:
+    import numpy as _np
+except ImportError:
+    _np = None
+
+
+def monte_carlo_fast(params):
+    """Preserve Python's draws and separate binary64 products/addition."""
+    samples, seed = params["samples"], params["seed"]
+    if (type(samples) is not int or not 0 <= samples <= 50_000_000
+            or type(seed) is not int or seed.bit_length() > 64):
+        raise ValueError("Unsupported Monte Carlo parameters")
+    draw = random.Random(seed).random
+    inside = 0
+    if _np is None:
+        for _ in range(samples):
+            x, y = draw(), draw()
+            if x*x + y*y <= 1.0:
+                inside += 1
+        return inside
+    # Fixed-size chunks bound working memory even for very large jobs.
+    for start in range(0, samples, 65536):
+        count = min(65536, samples-start)
+        xy = _np.fromiter(iter(draw, None), dtype=_np.float64,
+                          count=2*count).reshape(count, 2)
+        # Materialize each product before addition: no fused multiply-add,
+        # different summation order, or NumPy random-number generator.
+        xx = _np.multiply(xy[:, 0], xy[:, 0])
+        yy = _np.multiply(xy[:, 1], xy[:, 1])
+        inside += int(_np.count_nonzero(_np.add(xx, yy) <= 1.0))
+    return inside
 
 
 def sort_fast(params):
@@ -206,6 +239,15 @@ class MyContractor(Contractor):
         runner.cancel()
 
     async def _dispatch(self, message):
+        if message.get("type") == "ERROR" and message.get("code") == "bidding_closed":
+            task_id = message.get("task_id")
+            if type(task_id) is not int:
+                detail = message.get("message", "")
+                match = re.fullmatch(r"task ([0-9]+) is not accepting proposals", detail) if isinstance(detail, str) else None
+                task_id = int(match.group(1)) if match else None
+            if task_id is not None and task_id not in self._awarded:
+                self._commitments.pop(task_id, None)
+                self._quotes.pop(task_id, None)
         if message.get("type") == "ACCEPT_PROPOSAL":
             task_id = message["task_id"]
             if task_id in self._awarded:
@@ -256,10 +298,16 @@ class MyContractor(Contractor):
         fast["prime_marking"] = max(marking)
         fast["sort"] = max(measure(sort_fast, {"seed": 370, "n": n}) /
                            (n * math.log2(n)) for n in (100_000, 400_000, 1_200_000))
+        fast["monte"] = max(measure(monte_carlo_fast, {"seed": 370, "samples": n}) / n
+                            for n in (100_000, 500_000))
         self._fast = fast
         self._log("fast calibration complete (matrix n²; prime sieve; exact fast sort)")
+        self._log("Monte Carlo backend: " + ("NumPy float64 batches" if _np is not None
+                                            else "Python fallback (NumPy unavailable)"))
 
     def _base_estimate(self, task):
+        if task.task_type == "monte_carlo_pi" and "monte" in self._fast:
+            return 0.0005 + task.params["samples"] * self._fast["monte"]
         if task.task_type == "sort_checksum":
             n = task.params["n"]
             coefficient = self._fast.get("sort")
@@ -412,6 +460,8 @@ class MyContractor(Contractor):
                 result = prime_sieve(task.params)
             elif task.task_type == "sort_checksum":
                 result = sort_fast(task.params)
+            elif task.task_type == "monte_carlo_pi":
+                result = monte_carlo_fast(task.params)
             else:
                 result = super().execute(task)
             if tracking:
@@ -513,7 +563,6 @@ def main() -> None:
     parser.add_argument("--name", required=True, help="your team name, e.g. Team_07")
     parser.add_argument("--url", required=True, help="wss://.../agent")
     parser.add_argument("--token", default=None, help="override CLASS_TOKEN from the environment or .env")
-    parser.add_argument("--machine", default=None, help="label shown on the leaderboard")
     parser.add_argument("--pricing", choices=("markup", "adaptive", "competitive"), default="competitive",
                         help="competitive pricing with hash risk checks (default), or legacy comparison modes")
     args = parser.parse_args()
@@ -527,7 +576,6 @@ def main() -> None:
         name=args.name,
         url=args.url,
         token=token,
-        machine=args.machine,
         pricing=args.pricing,
     ).run()
 

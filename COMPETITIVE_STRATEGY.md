@@ -1,8 +1,12 @@
 # Auctioneers: current competitive strategy
 
-The default mode is now `competitive`. It combines exact faster matrix, prime, and sorting algorithms with calibrated delivery estimates, faster price reductions after losses, and explicit hash-search risk admission. It uses the existing Python 3.9.6 environment; no packages or SDK files were changed.
+The default mode is now `competitive`. It combines exact faster matrix, prime, sorting, and Monte Carlo algorithms with calibrated delivery estimates, faster price reductions after losses, and explicit hash-search risk admission. It uses the existing Python 3.9.6 environment; NumPy 2.0.2 optionally accelerates Monte Carlo; SDK files are unchanged.
 
 ## What changed and why
+
+### Monte Carlo: batch arithmetic, preserve every draw
+
+The agent now uses optional NumPy float64 batches to evaluate Python's original seeded points, with separate multiplication and addition operations. It calibrates the chosen backend and retains a Python fallback. Read the [correctness proof and measurements](MONTE_CARLO_PROOF.md).
 
 ### Sorting: less overhead, identical answer
 
