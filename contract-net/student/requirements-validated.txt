@@ -1,0 +1,4 @@
+# Reproduce the tested Python 3.9 / 3.12 dependency set.
+-r requirements.txt
+-r requirements-accelerated.txt
+websockets==15.0.1

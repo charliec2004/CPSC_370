@@ -1,0 +1,906 @@
+{
+  "summary": [
+    {
+      "python": "3.9.6",
+      "numpy": "2.0.2",
+      "machine": "arm64",
+      "seconds": {
+        "monte_carlo_pi": 0.158465042,
+        "sort_checksum": 0.29125479200000004,
+        "matmul_mod": 0.011574957999999969,
+        "prime_count": 0.0007989999999999942,
+        "hash_search": 0.05913433299999993
+      }
+    },
+    {
+      "python": "3.11.8",
+      "numpy": "2.0.2",
+      "machine": "arm64",
+      "seconds": {
+        "monte_carlo_pi": 0.14781429199501872,
+        "sort_checksum": 0.28630104195326567,
+        "matmul_mod": 0.008102874970063567,
+        "prime_count": 0.000865542097017169,
+        "hash_search": 0.06099308293778449
+      }
+    },
+    {
+      "python": "3.12.13",
+      "numpy": "2.0.2",
+      "machine": "arm64",
+      "seconds": {
+        "monte_carlo_pi": 0.14541524997912347,
+        "sort_checksum": 0.2785831660730764,
+        "matmul_mod": 0.006968082976527512,
+        "prime_count": 0.0007184169953688979,
+        "hash_search": 0.048096499987877905
+      }
+    },
+    {
+      "python": "3.13.12",
+      "numpy": "2.5.3",
+      "machine": "arm64",
+      "seconds": {
+        "monte_carlo_pi": 0.138715541921556,
+        "sort_checksum": 0.30005266703665257,
+        "matmul_mod": 0.009646249935030937,
+        "prime_count": 0.0007897079922258854,
+        "hash_search": 0.06319529202301055
+      }
+    },
+    {
+      "python": "3.14.0",
+      "numpy": "2.5.3",
+      "machine": "arm64",
+      "seconds": {
+        "monte_carlo_pi": 0.16520600009243935,
+        "sort_checksum": 0.29096516699064523,
+        "matmul_mod": 0.0070214580046013,
+        "prime_count": 0.0005895830690860748,
+        "hash_search": 0.061271374928765
+      }
+    }
+  ],
+  "runs": {
+    "/Users/charles/Documents/CLASSES/compsci/CPSC_370/contract-net/student/.venv/bin/python": [
+      {
+        "python": "3.9.6",
+        "machine": "arm64",
+        "numpy": "2.0.2",
+        "executable": "/Users/charles/Documents/CLASSES/compsci/CPSC_370/contract-net/student/.venv/bin/python",
+        "rows": [
+          {
+            "task_type": "monte_carlo_pi",
+            "params": {
+              "seed": 370,
+              "samples": 2000000
+            },
+            "answer": "1570675",
+            "seconds": 0.20894316600000007
+          },
+          {
+            "task_type": "sort_checksum",
+            "params": {
+              "seed": 370,
+              "n": 500000
+            },
+            "answer": "1484788199470501318",
+            "seconds": 0.341618875
+          },
+          {
+            "task_type": "matmul_mod",
+            "params": {
+              "seed": 370,
+              "n": 260,
+              "mod": 1000003
+            },
+            "answer": "696093",
+            "seconds": 0.011574957999999969
+          },
+          {
+            "task_type": "prime_count",
+            "params": {
+              "lo": 2000000,
+              "hi": 2250000
+            },
+            "answer": "17148",
+            "seconds": 0.0007989999999999942
+          },
+          {
+            "task_type": "hash_search",
+            "params": {
+              "seed": "cpsc370-golden",
+              "threshold": 65536
+            },
+            "answer": "90984",
+            "seconds": 0.06079350000000017
+          }
+        ],
+        "source_sha256": "8595383e96c4caa27990ce2d14f3106388d8da6ec4c26c3da66069c82b3ffd25"
+      },
+      {
+        "python": "3.9.6",
+        "machine": "arm64",
+        "numpy": "2.0.2",
+        "executable": "/Users/charles/Documents/CLASSES/compsci/CPSC_370/contract-net/student/.venv/bin/python",
+        "rows": [
+          {
+            "task_type": "monte_carlo_pi",
+            "params": {
+              "seed": 370,
+              "samples": 2000000
+            },
+            "answer": "1570675",
+            "seconds": 0.158465042
+          },
+          {
+            "task_type": "sort_checksum",
+            "params": {
+              "seed": 370,
+              "n": 500000
+            },
+            "answer": "1484788199470501318",
+            "seconds": 0.285759208
+          },
+          {
+            "task_type": "matmul_mod",
+            "params": {
+              "seed": 370,
+              "n": 260,
+              "mod": 1000003
+            },
+            "answer": "696093",
+            "seconds": 0.011339624999999964
+          },
+          {
+            "task_type": "prime_count",
+            "params": {
+              "lo": 2000000,
+              "hi": 2250000
+            },
+            "answer": "17148",
+            "seconds": 0.000950583999999921
+          },
+          {
+            "task_type": "hash_search",
+            "params": {
+              "seed": "cpsc370-golden",
+              "threshold": 65536
+            },
+            "answer": "90984",
+            "seconds": 0.05553258400000005
+          }
+        ],
+        "source_sha256": "8595383e96c4caa27990ce2d14f3106388d8da6ec4c26c3da66069c82b3ffd25"
+      },
+      {
+        "python": "3.9.6",
+        "machine": "arm64",
+        "numpy": "2.0.2",
+        "executable": "/Users/charles/Documents/CLASSES/compsci/CPSC_370/contract-net/student/.venv/bin/python",
+        "rows": [
+          {
+            "task_type": "monte_carlo_pi",
+            "params": {
+              "seed": 370,
+              "samples": 2000000
+            },
+            "answer": "1570675",
+            "seconds": 0.15457170800000003
+          },
+          {
+            "task_type": "sort_checksum",
+            "params": {
+              "seed": 370,
+              "n": 500000
+            },
+            "answer": "1484788199470501318",
+            "seconds": 0.29125479200000004
+          },
+          {
+            "task_type": "matmul_mod",
+            "params": {
+              "seed": 370,
+              "n": 260,
+              "mod": 1000003
+            },
+            "answer": "696093",
+            "seconds": 0.011758833999999996
+          },
+          {
+            "task_type": "prime_count",
+            "params": {
+              "lo": 2000000,
+              "hi": 2250000
+            },
+            "answer": "17148",
+            "seconds": 0.000785958000000031
+          },
+          {
+            "task_type": "hash_search",
+            "params": {
+              "seed": "cpsc370-golden",
+              "threshold": 65536
+            },
+            "answer": "90984",
+            "seconds": 0.05913433299999993
+          }
+        ],
+        "source_sha256": "8595383e96c4caa27990ce2d14f3106388d8da6ec4c26c3da66069c82b3ffd25"
+      }
+    ],
+    "/tmp/auctioneers-runtime-check/311/bin/python": [
+      {
+        "python": "3.11.8",
+        "machine": "arm64",
+        "numpy": "2.0.2",
+        "executable": "/tmp/auctioneers-runtime-check/311/bin/python",
+        "rows": [
+          {
+            "task_type": "monte_carlo_pi",
+            "params": {
+              "seed": 370,
+              "samples": 2000000
+            },
+            "answer": "1570675",
+            "seconds": 0.14781429199501872
+          },
+          {
+            "task_type": "sort_checksum",
+            "params": {
+              "seed": 370,
+              "n": 500000
+            },
+            "answer": "1484788199470501318",
+            "seconds": 0.261687875026837
+          },
+          {
+            "task_type": "matmul_mod",
+            "params": {
+              "seed": 370,
+              "n": 260,
+              "mod": 1000003
+            },
+            "answer": "696093",
+            "seconds": 0.008102874970063567
+          },
+          {
+            "task_type": "prime_count",
+            "params": {
+              "lo": 2000000,
+              "hi": 2250000
+            },
+            "answer": "17148",
+            "seconds": 0.0007906659739091992
+          },
+          {
+            "task_type": "hash_search",
+            "params": {
+              "seed": "cpsc370-golden",
+              "threshold": 65536
+            },
+            "answer": "90984",
+            "seconds": 0.058828832930885255
+          }
+        ],
+        "source_sha256": "8595383e96c4caa27990ce2d14f3106388d8da6ec4c26c3da66069c82b3ffd25"
+      },
+      {
+        "python": "3.11.8",
+        "machine": "arm64",
+        "numpy": "2.0.2",
+        "executable": "/tmp/auctioneers-runtime-check/311/bin/python",
+        "rows": [
+          {
+            "task_type": "monte_carlo_pi",
+            "params": {
+              "seed": 370,
+              "samples": 2000000
+            },
+            "answer": "1570675",
+            "seconds": 0.1452723330585286
+          },
+          {
+            "task_type": "sort_checksum",
+            "params": {
+              "seed": 370,
+              "n": 500000
+            },
+            "answer": "1484788199470501318",
+            "seconds": 0.358081458020024
+          },
+          {
+            "task_type": "matmul_mod",
+            "params": {
+              "seed": 370,
+              "n": 260,
+              "mod": 1000003
+            },
+            "answer": "696093",
+            "seconds": 0.0693027910310775
+          },
+          {
+            "task_type": "prime_count",
+            "params": {
+              "lo": 2000000,
+              "hi": 2250000
+            },
+            "answer": "17148",
+            "seconds": 0.001565124955959618
+          },
+          {
+            "task_type": "hash_search",
+            "params": {
+              "seed": "cpsc370-golden",
+              "threshold": 65536
+            },
+            "answer": "90984",
+            "seconds": 0.07113125000614673
+          }
+        ],
+        "source_sha256": "8595383e96c4caa27990ce2d14f3106388d8da6ec4c26c3da66069c82b3ffd25"
+      },
+      {
+        "python": "3.11.8",
+        "machine": "arm64",
+        "numpy": "2.0.2",
+        "executable": "/tmp/auctioneers-runtime-check/311/bin/python",
+        "rows": [
+          {
+            "task_type": "monte_carlo_pi",
+            "params": {
+              "seed": 370,
+              "samples": 2000000
+            },
+            "answer": "1570675",
+            "seconds": 0.14887262496631593
+          },
+          {
+            "task_type": "sort_checksum",
+            "params": {
+              "seed": 370,
+              "n": 500000
+            },
+            "answer": "1484788199470501318",
+            "seconds": 0.28630104195326567
+          },
+          {
+            "task_type": "matmul_mod",
+            "params": {
+              "seed": 370,
+              "n": 260,
+              "mod": 1000003
+            },
+            "answer": "696093",
+            "seconds": 0.007575875031761825
+          },
+          {
+            "task_type": "prime_count",
+            "params": {
+              "lo": 2000000,
+              "hi": 2250000
+            },
+            "answer": "17148",
+            "seconds": 0.000865542097017169
+          },
+          {
+            "task_type": "hash_search",
+            "params": {
+              "seed": "cpsc370-golden",
+              "threshold": 65536
+            },
+            "answer": "90984",
+            "seconds": 0.06099308293778449
+          }
+        ],
+        "source_sha256": "8595383e96c4caa27990ce2d14f3106388d8da6ec4c26c3da66069c82b3ffd25"
+      }
+    ],
+    "/tmp/auctioneers-runtime-check/312/bin/python": [
+      {
+        "python": "3.12.13",
+        "machine": "arm64",
+        "numpy": "2.0.2",
+        "executable": "/tmp/auctioneers-runtime-check/312/bin/python",
+        "rows": [
+          {
+            "task_type": "monte_carlo_pi",
+            "params": {
+              "seed": 370,
+              "samples": 2000000
+            },
+            "answer": "1570675",
+            "seconds": 0.14529945806134492
+          },
+          {
+            "task_type": "sort_checksum",
+            "params": {
+              "seed": 370,
+              "n": 500000
+            },
+            "answer": "1484788199470501318",
+            "seconds": 0.2785831660730764
+          },
+          {
+            "task_type": "matmul_mod",
+            "params": {
+              "seed": 370,
+              "n": 260,
+              "mod": 1000003
+            },
+            "answer": "696093",
+            "seconds": 0.006968082976527512
+          },
+          {
+            "task_type": "prime_count",
+            "params": {
+              "lo": 2000000,
+              "hi": 2250000
+            },
+            "answer": "17148",
+            "seconds": 0.0007184169953688979
+          },
+          {
+            "task_type": "hash_search",
+            "params": {
+              "seed": "cpsc370-golden",
+              "threshold": 65536
+            },
+            "answer": "90984",
+            "seconds": 0.048096499987877905
+          }
+        ],
+        "source_sha256": "8595383e96c4caa27990ce2d14f3106388d8da6ec4c26c3da66069c82b3ffd25"
+      },
+      {
+        "python": "3.12.13",
+        "machine": "arm64",
+        "numpy": "2.0.2",
+        "executable": "/tmp/auctioneers-runtime-check/312/bin/python",
+        "rows": [
+          {
+            "task_type": "monte_carlo_pi",
+            "params": {
+              "seed": 370,
+              "samples": 2000000
+            },
+            "answer": "1570675",
+            "seconds": 0.14541524997912347
+          },
+          {
+            "task_type": "sort_checksum",
+            "params": {
+              "seed": 370,
+              "n": 500000
+            },
+            "answer": "1484788199470501318",
+            "seconds": 0.31599754199851304
+          },
+          {
+            "task_type": "matmul_mod",
+            "params": {
+              "seed": 370,
+              "n": 260,
+              "mod": 1000003
+            },
+            "answer": "696093",
+            "seconds": 0.008150666020810604
+          },
+          {
+            "task_type": "prime_count",
+            "params": {
+              "lo": 2000000,
+              "hi": 2250000
+            },
+            "answer": "17148",
+            "seconds": 0.0007460420019924641
+          },
+          {
+            "task_type": "hash_search",
+            "params": {
+              "seed": "cpsc370-golden",
+              "threshold": 65536
+            },
+            "answer": "90984",
+            "seconds": 0.0949608749942854
+          }
+        ],
+        "source_sha256": "8595383e96c4caa27990ce2d14f3106388d8da6ec4c26c3da66069c82b3ffd25"
+      },
+      {
+        "python": "3.12.13",
+        "machine": "arm64",
+        "numpy": "2.0.2",
+        "executable": "/tmp/auctioneers-runtime-check/312/bin/python",
+        "rows": [
+          {
+            "task_type": "monte_carlo_pi",
+            "params": {
+              "seed": 370,
+              "samples": 2000000
+            },
+            "answer": "1570675",
+            "seconds": 0.1586985420435667
+          },
+          {
+            "task_type": "sort_checksum",
+            "params": {
+              "seed": 370,
+              "n": 500000
+            },
+            "answer": "1484788199470501318",
+            "seconds": 0.27228591695893556
+          },
+          {
+            "task_type": "matmul_mod",
+            "params": {
+              "seed": 370,
+              "n": 260,
+              "mod": 1000003
+            },
+            "answer": "696093",
+            "seconds": 0.005942041985690594
+          },
+          {
+            "task_type": "prime_count",
+            "params": {
+              "lo": 2000000,
+              "hi": 2250000
+            },
+            "answer": "17148",
+            "seconds": 0.0006927920039743185
+          },
+          {
+            "task_type": "hash_search",
+            "params": {
+              "seed": "cpsc370-golden",
+              "threshold": 65536
+            },
+            "answer": "90984",
+            "seconds": 0.04780770803336054
+          }
+        ],
+        "source_sha256": "8595383e96c4caa27990ce2d14f3106388d8da6ec4c26c3da66069c82b3ffd25"
+      }
+    ],
+    "/tmp/auctioneers-runtime-check/313/bin/python": [
+      {
+        "python": "3.13.12",
+        "machine": "arm64",
+        "numpy": "2.5.3",
+        "executable": "/private/tmp/auctioneers-runtime-check/313/bin/python",
+        "rows": [
+          {
+            "task_type": "monte_carlo_pi",
+            "params": {
+              "seed": 370,
+              "samples": 2000000
+            },
+            "answer": "1570675",
+            "seconds": 0.138715541921556
+          },
+          {
+            "task_type": "sort_checksum",
+            "params": {
+              "seed": 370,
+              "n": 500000
+            },
+            "answer": "1484788199470501318",
+            "seconds": 0.43946066696662456
+          },
+          {
+            "task_type": "matmul_mod",
+            "params": {
+              "seed": 370,
+              "n": 260,
+              "mod": 1000003
+            },
+            "answer": "696093",
+            "seconds": 0.01094795810058713
+          },
+          {
+            "task_type": "prime_count",
+            "params": {
+              "lo": 2000000,
+              "hi": 2250000
+            },
+            "answer": "17148",
+            "seconds": 0.0009509160881862044
+          },
+          {
+            "task_type": "hash_search",
+            "params": {
+              "seed": "cpsc370-golden",
+              "threshold": 65536
+            },
+            "answer": "90984",
+            "seconds": 0.08751149999443442
+          }
+        ],
+        "source_sha256": "8595383e96c4caa27990ce2d14f3106388d8da6ec4c26c3da66069c82b3ffd25"
+      },
+      {
+        "python": "3.13.12",
+        "machine": "arm64",
+        "numpy": "2.5.3",
+        "executable": "/private/tmp/auctioneers-runtime-check/313/bin/python",
+        "rows": [
+          {
+            "task_type": "monte_carlo_pi",
+            "params": {
+              "seed": 370,
+              "samples": 2000000
+            },
+            "answer": "1570675",
+            "seconds": 0.14129470800980926
+          },
+          {
+            "task_type": "sort_checksum",
+            "params": {
+              "seed": 370,
+              "n": 500000
+            },
+            "answer": "1484788199470501318",
+            "seconds": 0.30005266703665257
+          },
+          {
+            "task_type": "matmul_mod",
+            "params": {
+              "seed": 370,
+              "n": 260,
+              "mod": 1000003
+            },
+            "answer": "696093",
+            "seconds": 0.009096750058233738
+          },
+          {
+            "task_type": "prime_count",
+            "params": {
+              "lo": 2000000,
+              "hi": 2250000
+            },
+            "answer": "17148",
+            "seconds": 0.0007545000407844782
+          },
+          {
+            "task_type": "hash_search",
+            "params": {
+              "seed": "cpsc370-golden",
+              "threshold": 65536
+            },
+            "answer": "90984",
+            "seconds": 0.05946670798584819
+          }
+        ],
+        "source_sha256": "8595383e96c4caa27990ce2d14f3106388d8da6ec4c26c3da66069c82b3ffd25"
+      },
+      {
+        "python": "3.13.12",
+        "machine": "arm64",
+        "numpy": "2.5.3",
+        "executable": "/private/tmp/auctioneers-runtime-check/313/bin/python",
+        "rows": [
+          {
+            "task_type": "monte_carlo_pi",
+            "params": {
+              "seed": 370,
+              "samples": 2000000
+            },
+            "answer": "1570675",
+            "seconds": 0.13396350003313273
+          },
+          {
+            "task_type": "sort_checksum",
+            "params": {
+              "seed": 370,
+              "n": 500000
+            },
+            "answer": "1484788199470501318",
+            "seconds": 0.2770508750109002
+          },
+          {
+            "task_type": "matmul_mod",
+            "params": {
+              "seed": 370,
+              "n": 260,
+              "mod": 1000003
+            },
+            "answer": "696093",
+            "seconds": 0.009646249935030937
+          },
+          {
+            "task_type": "prime_count",
+            "params": {
+              "lo": 2000000,
+              "hi": 2250000
+            },
+            "answer": "17148",
+            "seconds": 0.0007897079922258854
+          },
+          {
+            "task_type": "hash_search",
+            "params": {
+              "seed": "cpsc370-golden",
+              "threshold": 65536
+            },
+            "answer": "90984",
+            "seconds": 0.06319529202301055
+          }
+        ],
+        "source_sha256": "8595383e96c4caa27990ce2d14f3106388d8da6ec4c26c3da66069c82b3ffd25"
+      }
+    ],
+    "/tmp/auctioneers-runtime-check/314/bin/python": [
+      {
+        "python": "3.14.0",
+        "machine": "arm64",
+        "numpy": "2.5.3",
+        "executable": "/tmp/auctioneers-runtime-check/314/bin/python",
+        "rows": [
+          {
+            "task_type": "monte_carlo_pi",
+            "params": {
+              "seed": 370,
+              "samples": 2000000
+            },
+            "answer": "1570675",
+            "seconds": 0.16481704090256244
+          },
+          {
+            "task_type": "sort_checksum",
+            "params": {
+              "seed": 370,
+              "n": 500000
+            },
+            "answer": "1484788199470501318",
+            "seconds": 0.29096516699064523
+          },
+          {
+            "task_type": "matmul_mod",
+            "params": {
+              "seed": 370,
+              "n": 260,
+              "mod": 1000003
+            },
+            "answer": "696093",
+            "seconds": 0.0070214580046013
+          },
+          {
+            "task_type": "prime_count",
+            "params": {
+              "lo": 2000000,
+              "hi": 2250000
+            },
+            "answer": "17148",
+            "seconds": 0.0006226669065654278
+          },
+          {
+            "task_type": "hash_search",
+            "params": {
+              "seed": "cpsc370-golden",
+              "threshold": 65536
+            },
+            "answer": "90984",
+            "seconds": 0.061271374928765
+          }
+        ],
+        "source_sha256": "8595383e96c4caa27990ce2d14f3106388d8da6ec4c26c3da66069c82b3ffd25"
+      },
+      {
+        "python": "3.14.0",
+        "machine": "arm64",
+        "numpy": "2.5.3",
+        "executable": "/tmp/auctioneers-runtime-check/314/bin/python",
+        "rows": [
+          {
+            "task_type": "monte_carlo_pi",
+            "params": {
+              "seed": 370,
+              "samples": 2000000
+            },
+            "answer": "1570675",
+            "seconds": 0.18159587495028973
+          },
+          {
+            "task_type": "sort_checksum",
+            "params": {
+              "seed": 370,
+              "n": 500000
+            },
+            "answer": "1484788199470501318",
+            "seconds": 0.31606762495357543
+          },
+          {
+            "task_type": "matmul_mod",
+            "params": {
+              "seed": 370,
+              "n": 260,
+              "mod": 1000003
+            },
+            "answer": "696093",
+            "seconds": 0.007094083004631102
+          },
+          {
+            "task_type": "prime_count",
+            "params": {
+              "lo": 2000000,
+              "hi": 2250000
+            },
+            "answer": "17148",
+            "seconds": 0.0005885410355404019
+          },
+          {
+            "task_type": "hash_search",
+            "params": {
+              "seed": "cpsc370-golden",
+              "threshold": 65536
+            },
+            "answer": "90984",
+            "seconds": 0.06669570796657354
+          }
+        ],
+        "source_sha256": "8595383e96c4caa27990ce2d14f3106388d8da6ec4c26c3da66069c82b3ffd25"
+      },
+      {
+        "python": "3.14.0",
+        "machine": "arm64",
+        "numpy": "2.5.3",
+        "executable": "/tmp/auctioneers-runtime-check/314/bin/python",
+        "rows": [
+          {
+            "task_type": "monte_carlo_pi",
+            "params": {
+              "seed": 370,
+              "samples": 2000000
+            },
+            "answer": "1570675",
+            "seconds": 0.16520600009243935
+          },
+          {
+            "task_type": "sort_checksum",
+            "params": {
+              "seed": 370,
+              "n": 500000
+            },
+            "answer": "1484788199470501318",
+            "seconds": 0.28548449999652803
+          },
+          {
+            "task_type": "matmul_mod",
+            "params": {
+              "seed": 370,
+              "n": 260,
+              "mod": 1000003
+            },
+            "answer": "696093",
+            "seconds": 0.006973334006033838
+          },
+          {
+            "task_type": "prime_count",
+            "params": {
+              "lo": 2000000,
+              "hi": 2250000
+            },
+            "answer": "17148",
+            "seconds": 0.0005895830690860748
+          },
+          {
+            "task_type": "hash_search",
+            "params": {
+              "seed": "cpsc370-golden",
+              "threshold": 65536
+            },
+            "answer": "90984",
+            "seconds": 0.05899575003422797
+          }
+        ],
+        "source_sha256": "8595383e96c4caa27990ce2d14f3106388d8da6ec4c26c3da66069c82b3ffd25"
+      }
+    ]
+  },
+  "limits": [
+    "Three rotated runtime sweeps, five representative tasks; finite sample, not tournament performance.",
+    "Python 3.13 and 3.14 use newer NumPy, so those comparisons include dependency/build differences.",
+    "Same machine and source; all five golden answers plus benchmark answers agree across interpreters."
+  ]
+}

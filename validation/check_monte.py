@@ -2,6 +2,7 @@
 import hashlib
 import json
 import math
+import platform
 import random
 import statistics
 import time
@@ -72,7 +73,7 @@ def main():
         assert candidate<bid.est_seconds,(n,candidate,bid)
         rows.append({'samples':n,'reference_seconds':reference,'candidate_seconds':candidate,
             'speedup':reference/candidate,'quoted_delivery':bid.est_seconds})
-    result={'python':'3.9.6 tested runtime','numpy':implementation._np.__version__,
+    result={'python':platform.python_version(),'numpy':implementation._np.__version__,
         'seeded_cases_both_backends':len(cases),'boundary_checks':'circle boundary, adjacent floats, chunk boundary, exactly two draws per point',
         'resource_guards':3,'benchmarks':rows,'source_sha256':hashlib.sha256(Path('contract-net/student/my_contractor.py').read_bytes()).hexdigest(),
         'limits':'Low-priority measurements while practice remains online; OS scheduling and competing work affect timings. No guarantee of beating another machine.'}

@@ -4,6 +4,8 @@ Start here to understand the agent. Use the [README](README.md) to run it, the [
 
 **Current default:** `competitive` pricing and optimized sorting have been added. Read [the current strategy](COMPETITIVE_STRATEGY.md) for the exact feedback and hash-risk formulas. Earlier practice results below describe their named historical modes.
 
+Python 3.12.13 is now the recommended tested runtime, with 3.9.6 retained as a fallback. See [runtime evidence and launch commands](PYTHON_RUNTIME.md). Historical timings below identify their original environment.
+
 ## The assignment in one minute
 
 The course server offers computing jobs with a budget and deadline. Our program either declines or submits a price and estimated delivery time. If we win, Charles's M1 Pro computes the answer locally and returns it. The server checks the answer and records payment, time cost, and any penalty.
@@ -170,7 +172,7 @@ All submitted logic is in [my_contractor.py](contract-net/student/my_contractor.
 | `on_reject`, `on_bid_invalid` | Release our stored quote; a valid loss also lowers the adaptive price share |
 | `_dispatch`, `on_registered` | Handle duplicate awards and reconnect bookkeeping |
 | `_main`, `request_stop`, `_drain` | Initialize the queue and coordinate graceful shutdown |
-| `class_token`, `main` | Load configuration and start the agent |
+| `env_value`, `class_token`, `main` | Load configuration, select practice or the configured tournament URL, and start the agent |
 
 State such as quotes and timing corrections lives in memory. It resets on process restart. The server's team history persists independently, so the leaderboard's lifetime profit can differ from the current process's profit.
 

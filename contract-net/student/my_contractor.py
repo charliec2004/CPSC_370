@@ -528,14 +528,14 @@ class MyContractor(Contractor):
             "delivery_allowance": self._network_seconds}))
 
 
-def class_token() -> str | None:
-    """Read CLASS_TOKEN from the environment, then the .env beside this file.
+def env_value(key_name) -> str | None:
+    """Read a setting from the environment, then the .env beside this file.
 
     The local file supports plain or quoted KEY=value lines and full-line
     comments. Values are literal: no shell commands or variable expansion.
     """
-    if "CLASS_TOKEN" in os.environ:
-        return os.environ["CLASS_TOKEN"] or None
+    if key_name in os.environ:
+        return os.environ[key_name] or None
     try:
         lines = Path(__file__).with_name(".env").read_text(encoding="utf-8").splitlines()
     except FileNotFoundError:
@@ -545,23 +545,29 @@ def class_token() -> str | None:
         if not line or line.startswith("#"):
             continue
         key, separator, value = line.partition("=")
-        if key.strip() != "CLASS_TOKEN":
+        if key.strip() != key_name:
             continue
         if not separator:
-            raise ValueError("CLASS_TOKEN in .env must use KEY=value format")
+            raise ValueError("Setting in .env must use KEY=value format")
         value = value.strip()
         if value.startswith(("'", '"')):
             if len(value) < 2 or value[-1] != value[0]:
-                raise ValueError("CLASS_TOKEN in .env has unmatched quotes")
+                raise ValueError("Setting in .env has unmatched quotes")
             value = value[1:-1]
         return value or None
     return None
 
 
+def class_token() -> str | None:
+    return env_value("CLASS_TOKEN")
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="CPSC 370 Contract Net contractor")
     parser.add_argument("--name", required=True, help="your team name, e.g. Team_07")
-    parser.add_argument("--url", required=True, help="wss://.../agent")
+    destination = parser.add_mutually_exclusive_group()
+    destination.add_argument("--url", help="explicit WebSocket URL; overrides the configured tournament URL")
+    destination.add_argument("--practice", action="store_true", help="join the course practice room")
     parser.add_argument("--token", default=None, help="override CLASS_TOKEN from the environment or .env")
     parser.add_argument("--pricing", choices=("markup", "adaptive", "competitive"), default="competitive",
                         help="competitive pricing with hash risk checks (default), or legacy comparison modes")
@@ -569,12 +575,19 @@ def main() -> None:
 
     try:
         token = args.token if args.token is not None else class_token()
+        url = (args.url if args.url is not None else
+               "wss://contractnet.blackdial.workers.dev/agent?room=practice" if args.practice else
+               env_value("INSTRUCTOR_TOURNAMENT_WEBSOCKET_URL"))
     except (OSError, UnicodeError, ValueError):
-        parser.error("Could not load CLASS_TOKEN; check the local .env file format and permissions.")
+        parser.error("Could not load configuration; check the local .env file format and permissions.")
+    if not url:
+        parser.error("Set INSTRUCTOR_TOURNAMENT_WEBSOCKET_URL, provide --url, or use --practice.")
+    if not url.startswith(("wss://", "ws://")):
+        parser.error("The destination must be a ws:// or wss:// WebSocket URL.")
 
     MyContractor(
         name=args.name,
-        url=args.url,
+        url=url,
         token=token,
         pricing=args.pricing,
     ).run()

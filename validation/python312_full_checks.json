@@ -1,0 +1,361 @@
+{
+  "python": "3.12.13 (main, May  8 2026, 18:24:29) [Clang 22.1.3 ]",
+  "platform": "macOS-26.6-arm64-arm-64bit",
+  "candidate_status": "integrated production executor and timing model",
+  "production_source_sha256": "8595383e96c4caa27990ce2d14f3106388d8da6ec4c26c3da66069c82b3ffd25",
+  "correctness": {
+    "matrix_reference_cases": 700,
+    "prime_reference_cases": 2997,
+    "independent_algebra_cases": 256,
+    "golden_cases": 5,
+    "resource_rejections": 6
+  },
+  "bidding_checks": 6,
+  "timing_holdouts": [
+    {
+      "task_type": "matmul_mod",
+      "params": {
+        "seed": 853,
+        "n": 53,
+        "mod": 17
+      },
+      "predicted_compute": 0.00100692666950959,
+      "measured_compute": 0.00040074996650218964,
+      "quoted_delivery": 0.1211
+    },
+    {
+      "task_type": "matmul_mod",
+      "params": {
+        "seed": 973,
+        "n": 173,
+        "mod": 1000003
+      },
+      "predicted_compute": 0.005901142147295306,
+      "measured_compute": 0.0028081670170649886,
+      "quoted_delivery": 0.126
+    },
+    {
+      "task_type": "matmul_mod",
+      "params": {
+        "seed": 1119,
+        "n": 319,
+        "mod": 1000003
+      },
+      "predicted_compute": 0.018864316417218006,
+      "measured_compute": 0.009879791992716491,
+      "quoted_delivery": 0.1389
+    },
+    {
+      "task_type": "matmul_mod",
+      "params": {
+        "seed": 1251,
+        "n": 451,
+        "mod": 1073741824
+      },
+      "predicted_compute": 0.03720679654856536,
+      "measured_compute": 0.04310083296149969,
+      "quoted_delivery": 0.1573
+    },
+    {
+      "task_type": "matmul_mod",
+      "params": {
+        "seed": 1027,
+        "n": 227,
+        "mod": 9223372036854775809
+      },
+      "predicted_compute": 0.013488658563933264,
+      "measured_compute": 0.017852999968454242,
+      "quoted_delivery": 0.1335
+    },
+    {
+      "task_type": "prime_count",
+      "params": {
+        "lo": 3,
+        "hi": 1003
+      },
+      "predicted_compute": 0.0005108757559168091,
+      "measured_compute": 1.1749914847314358e-05,
+      "quoted_delivery": 0.1206
+    },
+    {
+      "task_type": "prime_count",
+      "params": {
+        "lo": 7000000,
+        "hi": 7130003
+      },
+      "predicted_compute": 0.001847831745169574,
+      "measured_compute": 0.00044304097536951303,
+      "quoted_delivery": 0.1219
+    },
+    {
+      "task_type": "prime_count",
+      "params": {
+        "lo": 123000000,
+        "hi": 123600001
+      },
+      "predicted_compute": 0.00720193807009957,
+      "measured_compute": 0.002917167032137513,
+      "quoted_delivery": 0.1273
+    },
+    {
+      "task_type": "prime_count",
+      "params": {
+        "lo": 999000000,
+        "hi": 1000000001
+      },
+      "predicted_compute": 0.013709423327374232,
+      "measured_compute": 0.007357833092100918,
+      "quoted_delivery": 0.1338
+    },
+    {
+      "task_type": "prime_count",
+      "params": {
+        "lo": 999999999000,
+        "hi": 1000000000000
+      },
+      "predicted_compute": 0.04907155337907966,
+      "measured_compute": 0.04192150000017136,
+      "quoted_delivery": 0.1691
+    }
+  ],
+  "lifecycle_checks": [
+    "shutdown refuses new bids and preserves outstanding work",
+    "duplicate award enqueues once",
+    "reconnect drops only pending bids",
+    "overrunning work prevents new promises",
+    "compute bias learns from raw model",
+    "overhead excludes known queued work",
+    "hash variance does not train throughput",
+    "invalid bids release local quote and commitment"
+  ],
+  "protocol": {
+    "transport": "real WebSocket on 127.0.0.1",
+    "task_types_delivered": [
+      "monte_carlo_pi",
+      "prime_count",
+      "hash_search",
+      "sort_checksum",
+      "matmul_mod"
+    ],
+    "settlements_recorded": 5,
+    "registrations": 1,
+    "limitation": "Artificial generous budgets, supplied rates, and settlements; not a profit or timing test."
+  },
+  "benchmarks": [
+    {
+      "task_type": "matmul_mod",
+      "params": {
+        "seed": 957,
+        "n": 40,
+        "mod": 1000003
+      },
+      "reference_seconds": 0.0032685420010238886,
+      "candidate_seconds": 0.00015673600137233734,
+      "speedup": 20.853804948483013,
+      "trials": {
+        "reference": [
+          0.0032685420010238886,
+          0.0031979160849004984,
+          0.0032900830265134573
+        ],
+        "candidate": [
+          0.00016038899775594473,
+          0.00015484700755526623,
+          0.00015673600137233734
+        ]
+      }
+    },
+    {
+      "task_type": "matmul_mod",
+      "params": {
+        "seed": 987,
+        "n": 70,
+        "mod": 1000003
+      },
+      "reference_seconds": 0.015509916003793478,
+      "candidate_seconds": 0.0005186803173273802,
+      "speedup": 29.902650024801197,
+      "trials": {
+        "reference": [
+          0.015509916003793478,
+          0.015935583971440792,
+          0.015406792052090168
+        ],
+        "candidate": [
+          0.0005054719901333252,
+          0.0005186803173273802,
+          0.000534986339819928
+        ]
+      }
+    },
+    {
+      "task_type": "matmul_mod",
+      "params": {
+        "seed": 1047,
+        "n": 130,
+        "mod": 1000003
+      },
+      "reference_seconds": 0.09749537496827543,
+      "candidate_seconds": 0.00165555567946285,
+      "speedup": 58.88981939883054,
+      "trials": {
+        "reference": [
+          0.09749537496827543,
+          0.09705416695214808,
+          0.09883787494618446
+        ],
+        "candidate": [
+          0.0016925973274434607,
+          0.00165555567946285,
+          0.001617208356037736
+        ]
+      }
+    },
+    {
+      "task_type": "matmul_mod",
+      "params": {
+        "seed": 1177,
+        "n": 260,
+        "mod": 1000003
+      },
+      "reference_seconds": 0.7782439170405269,
+      "candidate_seconds": 0.006301916670054197,
+      "speedup": 123.49320973072052,
+      "trials": {
+        "reference": [
+          0.7868689169408754,
+          0.7782439170405269,
+          0.7616003330331296
+        ],
+        "candidate": [
+          0.006301916670054197,
+          0.006504208353968958,
+          0.006139958354954918
+        ]
+      }
+    },
+    {
+      "task_type": "matmul_mod",
+      "params": {
+        "seed": 1317,
+        "n": 400,
+        "mod": 1000003
+      },
+      "reference_seconds": 2.8173882080009207,
+      "candidate_seconds": 0.015388347363720337,
+      "speedup": 183.08582081031082,
+      "trials": {
+        "reference": [
+          2.7572994999354705,
+          2.971811041003093,
+          2.8173882080009207
+        ],
+        "candidate": [
+          0.01536837499588728,
+          0.015388347363720337,
+          0.018836555653251708
+        ]
+      }
+    },
+    {
+      "task_type": "prime_count",
+      "params": {
+        "lo": 1000000,
+        "hi": 1010000
+      },
+      "reference_seconds": 0.023134749964810908,
+      "candidate_seconds": 0.00010239332215860485,
+      "speedup": 225.9400269187059,
+      "trials": {
+        "reference": [
+          0.023134749964810908,
+          0.02368899993598461,
+          0.0187553750583902
+        ],
+        "candidate": [
+          0.00010049249976873398,
+          0.00013816165970638396,
+          0.00010239332215860485
+        ]
+      }
+    },
+    {
+      "task_type": "prime_count",
+      "params": {
+        "lo": 2000000,
+        "hi": 2025000
+      },
+      "reference_seconds": 0.061550915939733386,
+      "candidate_seconds": 0.00016464584041386843,
+      "speedup": 373.83826876533004,
+      "trials": {
+        "reference": [
+          0.061550915939733386,
+          0.06163145799655467,
+          0.0601622499525547
+        ],
+        "candidate": [
+          0.00016690999967977404,
+          0.00016191749833524227,
+          0.00016464584041386843
+        ]
+      }
+    },
+    {
+      "task_type": "prime_count",
+      "params": {
+        "lo": 2000000,
+        "hi": 2250000
+      },
+      "reference_seconds": 0.7182803750038147,
+      "candidate_seconds": 0.0006707866606302559,
+      "speedup": 1070.8030096020914,
+      "trials": {
+        "reference": [
+          0.6477416249690577,
+          0.7182803750038147,
+          0.867101333104074
+        ],
+        "candidate": [
+          0.0006707866606302559,
+          0.0006619591801427304,
+          0.0009641824988648295
+        ]
+      }
+    },
+    {
+      "task_type": "prime_count",
+      "params": {
+        "lo": 10000000,
+        "hi": 10300000
+      },
+      "reference_seconds": 1.4228225409751758,
+      "candidate_seconds": 0.0010038791596889496,
+      "speedup": 1417.3245128587341,
+      "trials": {
+        "reference": [
+          1.5904638749780133,
+          1.4228225409751758,
+          1.3960755000589415
+        ],
+        "candidate": [
+          0.0010002725012600421,
+          0.0010038791596889496,
+          0.001012487499974668
+        ]
+      }
+    }
+  ],
+  "sdk_hashes_unchanged": {
+    "tasks.py": "0be0772c5ef9d80642fe416f4c4891e37e3b45b9181134ff895ebe284536292c",
+    "benchmark.py": "aa40d8714817f05f4c9e4ef596bcdd9d227c74fc1846879880b9e01c28152238",
+    "client.py": "ab55de22bc25adad89e33a1ebe9648f9ebe4c4795066cac055b87a705af4f4a0",
+    "__init__.py": "09673f3ac0e29bc3be2374b4dc36a0e11f1120c7a00b3c247ebf295f15cf582b"
+  },
+  "limitations": [
+    "Finite testing complements the mathematical argument; it does not exhaust all parameters.",
+    "Timing holdouts test local computation plus a delivery allowance, not real network conditions.",
+    "No claims of optimal pricing, tournament wins, or hash-search tail safety are established.",
+    "Reference and candidate alternate order; the practice agent is paused, but OS noise remains."
+  ]
+}
