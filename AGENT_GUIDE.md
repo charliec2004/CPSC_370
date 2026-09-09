@@ -35,6 +35,8 @@ We also refuse new work when stopping or when a current computation has already 
 
 ## Our current price and time formulas
 
+Competitive delivery quotes now use a measured mean overhead after five samples, while cost and deadline checks retain a conservative allowance. See [delivery estimates](DELIVERY_ESTIMATES.md) for the evidence and limits. Thus, the quoted time can be smaller than the time used to calculate the price floor.
+
 The legacy `--pricing markup` formula, also used as the non-hash minimum in competitive mode, is:
 
 ```text

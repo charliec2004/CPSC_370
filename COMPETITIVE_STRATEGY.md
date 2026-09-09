@@ -30,6 +30,10 @@ For three one-second tasks with a 0.12-second delivery allowance, the estimates 
 
 The [queue checks](validation/queue_checks.json) exercise three overlapping CFPs through the actual SDK, partial running work, overrun refusal, ongoing computation after timeout, rejection cleanup, and fallback behavior. This can improve admission and auction scores when auctions overlap; the practice room's serial configuration does not demonstrate live concurrency behavior.
 
+### Delivery estimates: separate prediction from safety
+
+After five valid observations, competitive bids quote mean overhead plus 20 ms. Deadline admission, cost floors, hash risk, and queue reservations retain the larger mean/90th-percentile allowance plus 20 ms. The mean better predicted overhead in two historical offline replays, though it was exceeded more often. See the [method, checks, and limitations](DELIVERY_ESTIMATES.md).
+
 ### Pricing: react quickly to losing
 
 For non-hash tasks, keep the existing minimum of `1.28 × predicted billed cost`. Let `share` be the fraction of budget remaining above that minimum:

@@ -1,0 +1,45 @@
+{
+  "python": "3.9.6",
+  "checks": "cold start, cost floor, deadline, hash risk, queue reservation, invalid/queued/failed observations, rolling window, legacy modes",
+  "replay": [
+    {
+      "log": "matrix-queue-live.log",
+      "log_sha256": "c2e33e5391c2349a67b56fc1a0cac55c79185c90c899103efebcf8571e5f609c",
+      "samples": 111,
+      "predictions": 106,
+      "old_mean_absolute_error": 0.09977018719810621,
+      "new_mean_absolute_error": 0.04742639659616127,
+      "old_mean_quote": 0.20606462390565206,
+      "new_mean_quote": 0.1421345879189687,
+      "old_underestimates": 9,
+      "new_underestimates": 23
+    },
+    {
+      "log": "competitive-current.log",
+      "log_sha256": "a22f5f6ee0e1dc3138d3d2389612b52100036e507c257f42eaf5e5a4661ef6f1",
+      "samples": 31,
+      "predictions": 26,
+      "old_mean_absolute_error": 0.04017084138461367,
+      "new_mean_absolute_error": 0.026634554376491593,
+      "old_mean_quote": 0.13148236380769474,
+      "new_mean_quote": 0.11476357466495782,
+      "old_underestimates": 2,
+      "new_underestimates": 3
+    }
+  ],
+  "protocol": {
+    "transport": "real WebSocket on 127.0.0.1",
+    "task_types_delivered": [
+      "monte_carlo_pi",
+      "prime_count",
+      "hash_search",
+      "sort_checksum",
+      "matmul_mod"
+    ],
+    "settlements_recorded": 5,
+    "registrations": 1,
+    "limitation": "Artificial generous budgets, supplied rates, and settlements; not a profit or timing test."
+  },
+  "source_sha256": "a4eddef01ab0926c07070be754958ac692daca3f146159ec32fceca25f398ba4",
+  "limits": "Historical successful unqueued jobs only; no prediction of tournament profit or failure rates. New estimate may be exceeded more often; conservative admission is separate."
+}

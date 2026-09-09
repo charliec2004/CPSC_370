@@ -366,6 +366,13 @@ class MyContractor(Contractor):
         return self._base_estimate(task) * self._bias.get(task.task_type, 1.0)
 
     @property
+    def quoted_overhead(self):
+        """Predict delivery overhead from prior observations, with a margin."""
+        if self._pricing != "competitive" or len(self._overheads) < 5:
+            return self._network_seconds
+        return min(self._network_seconds, max(0.05, statistics.mean(self._overheads) + 0.02))
+
+    @property
     def queue_seconds(self):
         now = time.perf_counter()
         with self._timing_lock:
@@ -426,18 +433,19 @@ class MyContractor(Contractor):
                 return None
             compute = self.estimate(task)
             queue = self.queue_seconds
-            finish = queue + compute + self._network_seconds
-            if not math.isfinite(finish) or finish > task.deadline_s:
+            safe_finish = queue + compute + self._network_seconds
+            if not math.isfinite(safe_finish) or safe_finish > task.deadline_s:
                 return None
             # Match wire precision without rounding a promise down or sending
             # a bid that becomes invalid only after SDK serialization.
-            finish = math.ceil(finish * 10000) / 10000
-            if finish > task.deadline_s:
+            safe_finish = math.ceil(safe_finish * 10000) / 10000
+            if safe_finish > task.deadline_s:
                 return None
+            finish = math.ceil((queue + compute + self.quoted_overhead) * 10000) / 10000
             # Keep 1.28, but charge for the whole predicted billed interval:
             # waiting, computation, worker scheduling, and delivery overhead.
             success = 1.0
-            expected_cost = finish * self.rules.cost_rate
+            expected_cost = safe_finish * self.rules.cost_rate
             if self._pricing == "competitive" and task.task_type == "hash_search":
                 if (not math.isfinite(self.rules.penalty_rate) or self.rules.penalty_rate < 0
                         or not math.isfinite(self.rules.late_credit)
@@ -468,6 +476,7 @@ class MyContractor(Contractor):
             return None
         self._quotes[task.task_id] = {"task_type": task.task_type, "compute": compute,
             "queue": queue, "overhead": self._network_seconds, "estimate": finish,
+            "quoted_overhead": self.quoted_overhead, "safe_finish": safe_finish,
             "price": price, "budget": task.budget, "pricing": self._pricing,
             "baseline_price": floor, "price_share": share if self._pricing != "markup" else 0,
             "model_success_probability": (success if self._pricing == "competitive"
@@ -548,18 +557,23 @@ class MyContractor(Contractor):
                 # corrected quote. Hash variance must not distort throughput.
                 ratio = min(4.0, max(0.5, duration/base))
                 self._bias[settlement.task_type] = old*0.8 + ratio*0.2
-            if quote["queue"] == 0 and settlement.runtime is not None:
-                self._overheads.append(max(0, settlement.runtime-duration))
+            if (quote["queue"] == 0 and settlement.runtime is not None
+                    and math.isfinite(settlement.runtime) and math.isfinite(duration)
+                    and 0 <= duration <= settlement.runtime):
+                self._overheads.append(settlement.runtime-duration)
                 if len(self._overheads) >= 3:
                     ordered = sorted(self._overheads)
-                    self._network_seconds = max(0.05, ordered[math.ceil(0.9*len(ordered))-1] + 0.02)
+                    self._network_seconds = max(0.05,
+                        ordered[math.ceil(0.9*len(ordered))-1] + 0.02,
+                        statistics.mean(ordered) + 0.02)
         self._log("MEASUREMENT " + json.dumps({"task_id": settlement.task_id,
             "task_type": settlement.task_type, "verdict": settlement.verdict,
             "runtime": settlement.runtime, "estimate": settlement.est_seconds,
             "compute_seconds": measurement[1] if measurement else None,
             "revenue": settlement.revenue, "cost": settlement.cost,
             "penalty": settlement.penalty, "profit": settlement.profit,
-            "delivery_allowance": self._network_seconds}))
+            "delivery_allowance": self._network_seconds,
+            "quoted_overhead": self.quoted_overhead}))
 
 
 def env_value(key_name) -> str | None:
