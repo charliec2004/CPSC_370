@@ -1,0 +1,49 @@
+{
+  "python": "3.9.6",
+  "numpy": "2.0.2",
+  "seeded_reference_cases_both_backends": 145,
+  "worst_case_checksum_sizes": [
+    0,
+    1,
+    511,
+    512,
+    513,
+    5000000
+  ],
+  "rejection_draw_and_invalid_input_checks": "passed",
+  "benchmarks": [
+    {
+      "n": 50000,
+      "previous_python_seconds": 0.01829391700000005,
+      "numpy_seconds": 0.008509792000000127,
+      "runtime_reduction": 0.534829418981178
+    },
+    {
+      "n": 500000,
+      "previous_python_seconds": 0.23577429100000002,
+      "numpy_seconds": 0.08585908399999997,
+      "runtime_reduction": 0.6358420435245844
+    },
+    {
+      "n": 1700003,
+      "previous_python_seconds": 1.067182375,
+      "numpy_seconds": 0.29927241700000007,
+      "runtime_reduction": 0.7195676915110221
+    }
+  ],
+  "protocol": {
+    "transport": "real WebSocket on 127.0.0.1",
+    "task_types_delivered": [
+      "monte_carlo_pi",
+      "prime_count",
+      "hash_search",
+      "sort_checksum",
+      "matmul_mod"
+    ],
+    "settlements_recorded": 5,
+    "registrations": 1,
+    "limitation": "Artificial generous budgets, supplied rates, and settlements; not a profit or timing test."
+  },
+  "source_sha256": "4eebb3fb0e61df9af6aa5db751f03610843b2304b85bcf1c236eaddf493f5f79",
+  "limits": "Offline CPU timings, not server delivery times or tournament profit."
+}

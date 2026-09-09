@@ -12,7 +12,7 @@ The agent now uses optional NumPy float64 batches to evaluate Python's original 
 
 The reference generates each integer with `Random(seed).randrange(0, 2**31)`. On our supported CPython runtime that draws 32 random bits and rejects values at or above 2**31. Our executor performs those same draws and rejections directly. Using only 31 bits would change the seeded sequence and produce wrong answers; we do not do that.
 
-After sorting, the answer is the weighted sum modulo `2**61 - 1`. Exact Python integer arithmetic lets us take the modulus once at the end instead of once per element. Both changes preserve the reference result. We retain all rejection draws, input ordering, sorting, and position weights.
+After sorting, the answer is the weighted sum modulo `2**61 - 1`. With NumPy installed, the agent sorts an int64 array and computes weighted subtotals in chunks of 512. Every chunk is bounded below the int64 limit; subtotals are converted to Python integers before accumulation and final reduction. Without NumPy, the previous Python sort and exact sum remain available. Both paths retain the same rejection draws, sorting, and position weights. See the [overflow proof and measurements](SORT_NUMPY_PROOF.md).
 
 Startup benchmarks the actual optimized sort at 100,000, 400,000, and 1,200,000 elements and uses the larger measured seconds-per-n-log-n coefficient. Per-task compute corrections still learn from successful local timings. This does not reuse answers or predict random outcomes.
 

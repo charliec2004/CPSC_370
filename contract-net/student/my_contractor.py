@@ -84,6 +84,16 @@ def sort_fast(params):
             or type(seed) is not int or seed.bit_length() > 64):
         raise ValueError("Unsupported sort parameters")
     bits = random.Random(seed).getrandbits
+    if _np is not None:
+        def draws():
+            for _ in range(n):
+                value = bits(32)
+                while value >= 2**31:
+                    value = bits(32)
+                yield value
+        values = _np.fromiter(draws(), dtype=_np.int64, count=n)
+        values.sort()
+        return _sort_checksum64(values)
     values = []
     append = values.append
     for _ in range(n):
@@ -94,6 +104,18 @@ def sort_fast(params):
     values.sort()
     # Exact Python integers allow reducing the weighted sum just once.
     return sum(i * value for i, value in enumerate(values, 1)) % ((1 << 61) - 1)
+
+
+def _sort_checksum64(values):
+    """Internal: <=5M sorted values in [0, 2**31), accumulated exactly."""
+    total = 0
+    for start in range(0, len(values), 512):
+        stop = min(len(values), start + 512)
+        # Each nonnegative chunk sum is <=512*5M*(2**31-1)<2**63.
+        # Convert each subtotal to a Python integer before summing chunks.
+        total += int(_np.dot(values[start:stop],
+                             _np.arange(start+1, stop+1, dtype=_np.int64)))
+    return total % ((1 << 61) - 1)
 
 
 def _hash_scan(seed, target, nonces):
