@@ -146,10 +146,10 @@ def bidding_checks():
     return 6
 
 
-def protocol_checks():
+def protocol_checks(pricing="markup"):
     # Construct OUTSIDE asyncio.run(), reproducing the Python 3.9 setup that
     # previously killed the waiting worker. Candidate inherits our queue fix.
-    agent = make_agent("OfflineCheck", "", token="offline-test-only", auto_calibrate=False, verbose=False)
+    agent = make_agent("OfflineCheck", "", token="offline-test-only", auto_calibrate=False, verbose=False, pricing=pricing)
     agent.rates = calibrate(verbose=False)
     agent.calibrate_fast()
     results, connections = [], []

@@ -103,8 +103,12 @@ def prime_sieve(params):
 class MyContractor(Contractor):
     """Exact fast executors, measured delivery estimates, and a 28% markup."""
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, pricing="markup", **kwargs):
+        if pricing not in ("markup", "adaptive"):
+            raise ValueError("Unknown pricing policy")
         super().__init__(*args, **kwargs)
+        self._pricing = pricing
+        self._price_shares = {}
         self._fast = {}
         self._bias = {}
         self._overheads = deque(maxlen=20)
@@ -291,11 +295,21 @@ class MyContractor(Contractor):
             price = round(finish * self.rules.cost_rate * 1.28, 4)
             if not math.isfinite(price) or price > task.budget:
                 return None
+            floor = price
+            share = self._price_shares.get(task.task_type, 0.5)
+            if self._pricing == "adaptive":
+                # Explore the available budget without bidding below the
+                # baseline minimum. Floor the budget to valid wire precision.
+                ceiling = math.floor(task.budget * 10000) / 10000
+                if floor > ceiling:
+                    return None
+                price = min(ceiling, round(floor + share * (ceiling-floor), 4))
         except (KeyError, TypeError, ValueError, OverflowError):
             return None
         self._quotes[task.task_id] = {"task_type": task.task_type, "compute": compute,
             "queue": queue, "overhead": self._network_seconds, "estimate": finish,
-            "price": price, "budget": task.budget}
+            "price": price, "budget": task.budget, "pricing": self._pricing,
+            "baseline_price": floor, "price_share": share if self._pricing == "adaptive" else 0}
         self._log("BID " + json.dumps({"task_id": task.task_id, **self._quotes[task.task_id]}))
         return Bid(price=price, est_seconds=finish)
 
@@ -327,13 +341,21 @@ class MyContractor(Contractor):
                     self._running = None
 
     def on_reject(self, task_id, winner, price):
-        self._quotes.pop(task_id, None)
+        quote = self._quotes.pop(task_id, None)
+        if (quote and self._pricing == "adaptive" and winner
+                and winner != self.name and type(price) in (int, float)
+                and math.isfinite(price) and price >= 0):
+            kind = quote["task_type"]
+            self._price_shares[kind] = max(0.0, self._price_shares.get(kind, 0.5) - 0.10)
 
     def on_bid_invalid(self, task_id, reason):
         self._quotes.pop(task_id, None)
 
     def on_settled(self, settlement):
         quote = self._quotes.pop(settlement.task_id, None)
+        if quote and self._pricing == "adaptive" and settlement.verdict == "correct":
+            kind = quote["task_type"]
+            self._price_shares[kind] = min(0.95, self._price_shares.get(kind, 0.5) + 0.05)
         with self._timing_lock:
             measurement = next((v for v in reversed(self._measurements)
                                 if v[0] == settlement.task_id), None)
@@ -397,6 +419,8 @@ def main() -> None:
     parser.add_argument("--url", required=True, help="wss://.../agent")
     parser.add_argument("--token", default=None, help="override CLASS_TOKEN from the environment or .env")
     parser.add_argument("--machine", default=None, help="label shown on the leaderboard")
+    parser.add_argument("--pricing", choices=("markup", "adaptive"), default="markup",
+                        help="baseline 1.28 markup or experimental budget-aware pricing")
     args = parser.parse_args()
 
     try:
@@ -409,6 +433,7 @@ def main() -> None:
         url=args.url,
         token=token,
         machine=args.machine,
+        pricing=args.pricing,
     ).run()
 
 

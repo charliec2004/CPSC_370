@@ -103,3 +103,9 @@ From 17:56:04 through 18:02:21 Pacific, the measured run delivered 49 jobs corre
 During the earlier stop/restart transition, a standing bid from the reference agent timed out after that process was stopped, adding a fifth lifetime failure. It is not part of the optimized run's measurement records. The final code now supports graceful shutdown: refuse new work, honor already pending bids, and wait for outstanding work to settle. This behavior passed a real local WebSocket test with a stop requested before an outstanding bid was awarded.
 
 The final version has been restarted on the same Python 3.9.6 environment. See [OPTIMIZATION_PROOF.md](OPTIMIZATION_PROOF.md) and [validation/live_results.json](validation/live_results.json) for the final evidence and its limitations. At this markup, matrix and prime jobs together earned only 1.16 credits across 19 correct deliveries; budget-aware pricing remains the next experiment, not a proven improvement.
+
+## Adaptive pricing trial — September 8, 2026
+
+The subsequent experiment added optional `--pricing adaptive` while preserving the default 1.28 markup mode. It asks for half the budget remaining above that minimum, then adjusts the fraction separately by task type: up after correct delivery, down after losing to another contractor. Runtime estimates and executors are unchanged.
+
+The baseline process stopped gracefully before the adaptive process connected. A snapshot from 18:28:24 through 18:30:11 Pacific recorded 14 correct deliveries across all five types, zero failures, and 26.93 credits profit. The adaptive process continues beyond this snapshot. This was not a controlled comparison and competing bids were not sampled. See [PRICING_EXPERIMENT.md](PRICING_EXPERIMENT.md) for the exact policy, local checks, evidence, and remaining runtime-risk work.

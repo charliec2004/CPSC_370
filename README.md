@@ -2,11 +2,13 @@
 
 Group workspace for Assignment 1: build a Python contractor that bids on computational tasks and executes awarded jobs locally.
 
+**New to the project? Read [How Auctioneers works](AGENT_GUIDE.md)** for the full plain-English walkthrough, a worked bidding example, the code map, and the current limitations.
+
 **Team name:** `Auctioneers` — use this exact name for all practice and tournament runs.
 
 **Tournament machine:** Charles's laptop. Tune and validate the final strategy on this machine.
 
-The agent now uses exact optimized matrix and prime executors. Startup measures their speed, and settlement history adjusts computation estimates and delivery overhead. The price remains 1.28 times predicted billed cost, including queued work and delivery time. The existing Python 3.9.6 environment on Charles's M1 Pro is the verified runtime; no new packages are required.
+The agent now uses exact optimized matrix and prime executors. Startup measures their speed, and settlement history adjusts computation estimates and delivery overhead. Default pricing is 1.28 times predicted billed cost, including queued work and delivery time. Optional `--pricing adaptive` adds a share of the remaining budget and adjusts it from outcomes; see the [pricing experiment](PRICING_EXPERIMENT.md). The existing Python 3.9.6 environment on Charles's M1 Pro is the verified runtime; no new packages are required.
 
 ## Setup
 
@@ -28,6 +30,8 @@ The [practice dashboard](https://contractnet.blackdial.workers.dev/dev?room=prac
 ```bash
 python my_contractor.py --name Auctioneers --url 'wss://contractnet.blackdial.workers.dev/agent?room=practice'
 ```
+
+Add `--pricing adaptive` to the command to try the new pricing experiment. Omit it (or use `--pricing markup`) to reproduce the baseline.
 
 The agent reads `.env` beside `my_contractor.py`, regardless of your working directory. An existing `CLASS_TOKEN` environment variable takes precedence; `--token` overrides both. Values may be plain or quoted and are read literally, without shell expansion. Coordinate runs: two agents using the same name cannot stay connected at once.
 

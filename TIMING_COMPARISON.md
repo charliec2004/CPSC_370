@@ -2,7 +2,7 @@
 
 **Team:** `Auctioneers`
 
-Use this table to compare our laptops before choosing the tournament machine. Lower times are faster. These are small verification tasks; confirm performance and connection reliability in the practice room before deciding.
+This table preserves our original laptop comparison. We have selected Charles's M1 Pro. Lower times are faster; these small reference verification tasks are different from the optimized executor's current performance.
 
 ## Results
 
@@ -21,7 +21,7 @@ All times are in seconds. Replace the teammate placeholders with your names and 
 | Verification result | All checks passed | — | — |
 | Executor | Supplied reference | — | — |
 
-Charles's results are from one successful `verify.py` run using the supplied reference executor. No live practice timings are included yet.
+Charles's results are from one successful `verify.py` run using the supplied reference executor. Current optimized benchmarks and live practice measurements are in [OPTIMIZATION_PROOF.md](OPTIMIZATION_PROOF.md).
 
 ## How to add your results
 
@@ -38,4 +38,4 @@ Compare estimated versus actual delivery times, profit, deadline failures, and c
 
 - **Selected tournament laptop:** Charles's laptop
 - **Reason:** Team decision; tune and validate the final strategy on this machine.
-- **Practice observations:** To fill in
+- **Practice observations:** See [PRACTICE_NOTES.md](PRACTICE_NOTES.md) for experiment history and [OPTIMIZATION_PROOF.md](OPTIMIZATION_PROOF.md) for the integrated results.

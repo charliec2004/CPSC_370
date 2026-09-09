@@ -6,6 +6,8 @@ The matrix checksum rearrangement and segmented prime sieve are exact algorithms
 
 The optimized executors and their calibrated timing models are now implemented in `my_contractor.py`, retaining the 1.28 multiplier over full predicted billed time. Ten independent-size timing holdouts passed. This does **not** establish optimal pricing or guaranteed tournament wins.
 
+The recorded execution trial below used baseline markup pricing. The newer optional adaptive pricing experiment has separate [checks and evidence](PRICING_EXPERIMENT.md); it does not change these algorithms.
+
 ## Reproduce the evidence
 
 From the repository root:
