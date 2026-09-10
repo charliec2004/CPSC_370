@@ -34,8 +34,38 @@ fn execute(line: &[u8]) -> serde_json::Value {
 }
 
 fn main() -> io::Result<()> {
-    if std::env::args().len() != 1 {
-        eprintln!("Usage: auctioneers < requests.jsonl (offline execution only)");
+    let args: Vec<_> = std::env::args().skip(1).collect();
+    if args.first().is_some_and(|s| s == "--help" || s == "-h") {
+        println!(
+            "Offline: auctioneers < requests.jsonl\nNetwork: auctioneers run --name Auctioneers [--practice | --url URL] [--env-file PATH]\nReads CLASS_TOKEN and INSTRUCTOR_TOURNAMENT_WEBSOCKET_URL from environment or student/.env.\nCtrl+C drains pending work before disconnecting."
+        );
+        return Ok(());
+    }
+    if args.first().is_some_and(|s| s == "run") {
+        if rustls::crypto::ring::default_provider().install_default().is_err() {
+            eprintln!("could not initialize TLS provider");
+            std::process::exit(1);
+        }
+        let config = match auctioneers::config::Config::parse(args.into_iter().skip(1)) {
+            Ok(config) => config,
+            Err(error) => {
+                eprintln!("{error}");
+                std::process::exit(2);
+            }
+        };
+        let runtime = tokio::runtime::Builder::new_multi_thread()
+            .enable_all()
+            .build()?;
+        let result = runtime.block_on(auctioneers::client::run(config));
+        runtime.shutdown_timeout(Duration::from_secs(1));
+        if let Err(error) = result {
+            eprintln!("{error}");
+            std::process::exit(1);
+        }
+        return Ok(());
+    }
+    if !args.is_empty() {
+        eprintln!("unknown command; use --help");
         std::process::exit(2);
     }
     let mut input = io::stdin().lock();

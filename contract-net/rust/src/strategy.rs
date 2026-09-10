@@ -30,6 +30,7 @@ impl Default for Rules {
 
 #[derive(Clone, Debug, Serialize)]
 pub struct Quote {
+    pub budget: f64,
     pub task_type: String,
     pub price: f64,
     pub estimate: f64,
@@ -242,9 +243,10 @@ impl Strategy {
                 cost = (cost + (1. - success) * self.rules.penalty_rate * budget) / success;
             }
         }
-        let baseline = round4(cost * 1.28);
+        // Prices must cover modelled cost even after a string of auction losses.
+        let baseline = ceil4(cost * 1.28).max(0.01);
         let ceiling = (budget * 10000.).floor() / 10000.;
-        if !baseline.is_finite() || ceiling <= 0. {
+        if !baseline.is_finite() || ceiling < baseline {
             return None;
         }
         let share = self
@@ -252,9 +254,9 @@ impl Strategy {
             .get(work.kind())
             .copied()
             .unwrap_or(self.initial_share());
-        // Competition first: debt is allowed, so there is no cost floor.
-        let price = round4(ceiling * share).max(0.0001).min(ceiling);
+        let price = round4(ceiling * share).max(baseline).min(ceiling);
         Some(Quote {
+            budget,
             task_type: work.kind().into(),
             price,
             estimate,
@@ -274,7 +276,7 @@ impl Strategy {
             .get(kind)
             .copied()
             .unwrap_or(self.initial_share());
-        let next = old * 0.25;
+        let next = (old * 0.75).max(0.001);
         self.shares.insert(kind.into(), next);
         self.wins.insert(kind.into(), 0);
     }
@@ -295,11 +297,27 @@ impl Strategy {
                 .get(kind)
                 .copied()
                 .unwrap_or(self.initial_share());
-            self.shares
-                .insert(kind.into(), (old.max(0.000001) * 1.1).min(0.95));
+            self.shares.insert(
+                kind.into(),
+                (old.max(q.price / q.budget) * 1.15 + 0.005).min(0.95),
+            );
         }
         if verdict != "correct" {
             return;
+        }
+        if let Some(runtime) = runtime.filter(|r| r.is_finite() && *r >= 0.) {
+            let measured_cost = runtime * self.rules.cost_rate;
+            if measured_cost > q.price {
+                let old = self
+                    .shares
+                    .get(kind)
+                    .copied()
+                    .unwrap_or(self.initial_share());
+                self.shares.insert(
+                    kind.into(),
+                    old.max(measured_cost * 1.2 / q.budget).min(0.95),
+                );
+            }
         }
         if let Some(duration) = duration.filter(|d| d.is_finite() && *d >= 0.) {
             if kind != "hash_search" && q.base > 0. {

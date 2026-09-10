@@ -65,11 +65,11 @@ fn quotes_reserve_queue_and_adapt_to_results() {
     assert!(strategy.quote(&work, 10., 0.2, 0.).is_none());
     assert!(strategy.quote(&work, 10., 1., 0.9).is_none());
     let first = strategy.quote(&work, 10., 2., 0.).unwrap();
-    assert_eq!(first.price, 0.1);
+    assert!(first.price >= first.safe_finish * strategy.rules.cost_rate);
     assert!(first.safe_finish >= first.compute + first.overhead);
     strategy.rejected(work.kind());
     let reduced = strategy.quote(&work, 10., 2., 0.).unwrap();
-    assert_eq!(reduced.price, 0.025);
+    assert!(reduced.price >= reduced.baseline_price);
     for _ in 0..5 {
         strategy.settled(&reduced, "correct", Some(0.1), Some(0.4));
     }
@@ -90,4 +90,48 @@ fn hash_bids_require_high_probability_of_finishing() {
     assert!(strategy.quote(&work, 10., 1., 0.).is_none());
     let quote = strategy.quote(&work, 10., 5., 0.).unwrap();
     assert!(quote.model_success_probability >= 0.95);
+}
+
+#[test]
+fn repeated_rejections_cannot_erase_cost_floor() {
+    let mut strategy = Strategy::new(Model {
+        monte: 0.001,
+        ..Model::default()
+    });
+    let work = Work::Monte {
+        seed: 0,
+        samples: 100,
+    };
+    for _ in 0..100 {
+        strategy.rejected(work.kind());
+    }
+    let q = strategy.quote(&work, 10., 2., 0.).unwrap();
+    assert!(q.price >= q.safe_finish * 1.28);
+    assert!(strategy.quote(&work, 0.01, 2., 0.).is_none());
+    strategy.settled(&q, "correct", Some(0.1), Some(1.));
+    let next = strategy.quote(&work, 10., 3., 0.).unwrap();
+    assert!(
+        next.price >= 1.2,
+        "loss must push price toward measured cost"
+    );
+}
+
+#[test]
+fn token_transport_requires_tls_except_loopback() {
+    use auctioneers::config::validate_url;
+    for url in [
+        "wss://example.com/agent?room=test",
+        "ws://127.0.0.1:1234/agent",
+        "ws://[::1]:1234/agent",
+    ] {
+        assert!(validate_url(url).is_ok());
+    }
+    for url in [
+        "ws://example.com/agent",
+        "https://example.com",
+        "wss://user:secret@example.com",
+        "wss://example.com/#token",
+    ] {
+        assert!(validate_url(url).is_err());
+    }
 }
