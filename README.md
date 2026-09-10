@@ -8,6 +8,10 @@ Group workspace for Assignment 1: build a Python contractor that bids on computa
 
 **Tournament machine:** Charles's laptop. Tune and validate the final strategy on this machine.
 
+The [Rust rewrite](contract-net/rust/README.md) now has an offline executor and
+Python reference parity checks. Its network client is still pending; use the
+Python contractor below for practice and tournament runs.
+
 The agent uses exact optimized matrix, prime, sorting, Monte Carlo, and hash-search executors. NumPy accelerates sorting and Monte Carlo, with Python fallbacks. Startup measures their speed, and settlements adjust computation estimates and delivery overhead. The default `competitive` mode lowers prices quickly after losses and screens hash-search deadline risk. Read the [current strategy](COMPETITIVE_STRATEGY.md) and [delivery estimate evidence](DELIVERY_ESTIMATES.md). Python 3.12.13 is now the recommended measured runtime; the existing 3.9.6 environment remains a fallback. See the [runtime comparison and rules explanation](PYTHON_RUNTIME.md).
 
 ## Setup
